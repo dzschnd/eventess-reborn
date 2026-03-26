@@ -1,4 +1,4 @@
-# refactoring-project
+# Eventess
 
 ## Docker (stack)
 

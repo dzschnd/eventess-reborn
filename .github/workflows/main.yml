@@ -78,14 +78,92 @@ jobs:
           context: ./front
           file: ./front/Dockerfile
           push: true
+          build-args: |
+            REACT_APP_SERVER_DOMAIN=${{ secrets.REACT_APP_SERVER_DOMAIN }}
           tags: |
             ${{ env.FRONT_IMAGE }}:latest
             ${{ env.FRONT_IMAGE }}:${{ github.sha }}
 
-      # - name: Migrate DB (placeholder: requires a remote ssh server)
-      #   run: |
-      #     # ssh user@host "cd /path && docker compose run --rm backend npm run migrate"
-      #
-      # - name: Deploy (placeholder: requires a remote ssh server)
-      #   run: |
-      #     # ssh user@host "cd /path && docker compose pull && docker compose up -d"
+      - name: Ensure remote deploy directory exists
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            mkdir -p "${{ secrets.SERVER_APP_DIR }}"
+
+      - name: Upload production compose file
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "docker-compose.prod.yml"
+          target: ${{ secrets.SERVER_APP_DIR }}
+          overwrite: true
+
+      - name: Deploy remotely with Docker Compose
+        uses: appleboy/ssh-action@v1.2.0
+        env:
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASS: ${{ secrets.DB_PASS }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          SERVER_PORT: ${{ secrets.SERVER_PORT }}
+          CLIENT_DOMAIN: ${{ secrets.CLIENT_DOMAIN }}
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+          COOKIE_SECURE: ${{ secrets.COOKIE_SECURE }}
+          EMAIL: ${{ secrets.EMAIL }}
+          EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
+          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+          ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
+          REFRESH_TOKEN_SECRET: ${{ secrets.REFRESH_TOKEN_SECRET }}
+          R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_BUCKET: ${{ secrets.R2_BUCKET }}
+          REACT_APP_SERVER_DOMAIN: ${{ secrets.REACT_APP_SERVER_DOMAIN }}
+          GHCR_USERNAME: ${{ secrets.GHCR_USERNAME }}
+          GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          envs: DB_USER,DB_PASS,DB_HOST,DB_PORT,DB_NAME,DATABASE_URL,SERVER_PORT,CLIENT_DOMAIN,SESSION_SECRET,COOKIE_SECURE,EMAIL,EMAIL_PASS,EMAIL_FROM,ACCESS_TOKEN_SECRET,REFRESH_TOKEN_SECRET,R2_ENDPOINT,R2_ACCESS_KEY_ID,R2_SECRET_ACCESS_KEY,R2_BUCKET,REACT_APP_SERVER_DOMAIN,GHCR_USERNAME,GHCR_TOKEN
+          script: |
+            cd "${{ secrets.SERVER_APP_DIR }}"
+
+            cat > .env <<'EOF'
+            DB_USER=${DB_USER}
+            DB_PASS=${DB_PASS}
+            DB_HOST=${DB_HOST}
+            DB_PORT=${DB_PORT}
+            DB_NAME=${DB_NAME}
+            DATABASE_URL=${DATABASE_URL}
+            SERVER_PORT=${SERVER_PORT}
+            CLIENT_DOMAIN=${CLIENT_DOMAIN}
+            SESSION_SECRET=${SESSION_SECRET}
+            COOKIE_SECURE=${COOKIE_SECURE}
+            EMAIL=${EMAIL}
+            EMAIL_PASS=${EMAIL_PASS}
+            EMAIL_FROM=${EMAIL_FROM}
+            ACCESS_TOKEN_SECRET=${ACCESS_TOKEN_SECRET}
+            REFRESH_TOKEN_SECRET=${REFRESH_TOKEN_SECRET}
+            R2_ENDPOINT=${R2_ENDPOINT}
+            R2_ACCESS_KEY_ID=${R2_ACCESS_KEY_ID}
+            R2_SECRET_ACCESS_KEY=${R2_SECRET_ACCESS_KEY}
+            R2_BUCKET=${R2_BUCKET}
+            REACT_APP_SERVER_DOMAIN=${REACT_APP_SERVER_DOMAIN}
+            EOF
+
+            docker login ghcr.io -u "${GHCR_USERNAME}" -p "${GHCR_TOKEN}"
+            docker compose -f docker-compose.prod.yml pull
+            docker compose -f docker-compose.prod.yml up -d db traefik
+            docker compose -f docker-compose.prod.yml run --rm backend npx prisma migrate deploy
+            docker compose -f docker-compose.prod.yml up -d --remove-orphans
