@@ -50,19 +50,19 @@ export const sendVerificationEmail = async (email: string, otp: string): Promise
 	if (!emailUser || !emailPass || !emailFrom) {
 		throw new Error("Email credentials are not configured");
 	}
-	const transporter = nodemailer.createTransport({
-		service: "gmail",
-		auth: {
-			user: emailUser,
-			pass: emailPass,
-		},
-	});
-	const mailOptions = {
-		from: emailFrom,
-		to: email,
-		subject: "Ваш код верификации",
-		html: htmlContent,
-	};
+	// const transporter = nodemailer.createTransport({
+	// 	service: "gmail",
+	// 	auth: {
+	// 		user: emailUser,
+	// 		pass: emailPass,
+	// 	},
+	// });
+	// const mailOptions = {
+	// 	from: emailFrom,
+	// 	to: email,
+	// 	subject: "Ваш код верификации",
+	// 	html: htmlContent,
+	// };
 
 	// await transporter.sendMail(mailOptions);
 	await Promise.resolve()
