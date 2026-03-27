@@ -24,7 +24,6 @@ export const getInvitationDetailsQuery = async (
   const invitation = await client.invitation.findFirst({
     where: { id: id, isPublished: isPublished },
     include: {
-      template: true,
       place: true,
       invitationColors: { include: { color: true }, orderBy: { position: "asc" } },
       planItems: { orderBy: { position: "asc" } },
@@ -54,10 +53,9 @@ export const getInvitationDetailsQuery = async (
       partner_2_name: invitation.partner2Name,
       couple_image: invitation.coupleImage,
       author_id: invitation.authorId,
-      template_id: invitation.templateId,
       event_date: invitation.eventDate ? invitation.eventDate.toISOString().split("T")[0] : null,
       is_published: invitation.isPublished,
-      template_name: invitation.template.name,
+      template_name: invitation.templateName,
       place: invitation.place
         ? {
             address: invitation.place.address,
@@ -118,16 +116,6 @@ export const getAllInvitationsQuery = async (
   });
 };
 
-export const getTemplateIdQuery = async (
-  templateName: string,
-  client: PrismaClient | TxClient = prisma,
-): Promise<Array<{ id: number }>> => {
-  return client.template.findMany({
-    where: { name: templateName },
-    select: { id: true },
-  });
-};
-
 export const getInvitationPlaceIdQuery = async (
   invitationId: number | string,
   client: PrismaClient | TxClient = prisma,
@@ -184,11 +172,11 @@ export const getAllGuestAnswersQuery = async (
 
 export const createDraftQuery = async (
   authorId: number,
-  templateId: number,
+  templateName: string,
   client: PrismaClient | TxClient = prisma,
 ): Promise<[Invitation]> => {
   const created = await client.invitation.create({
-    data: { authorId: Number(authorId), templateId: Number(templateId) },
+    data: { authorId: Number(authorId), templateName: templateName },
   });
   return [created];
 };

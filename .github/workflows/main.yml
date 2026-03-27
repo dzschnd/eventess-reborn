@@ -172,7 +172,6 @@ jobs:
             docker compose -f docker-compose.prod.yml pull
             docker compose -f docker-compose.prod.yml up -d db traefik backend
             docker compose -f docker-compose.prod.yml exec -T backend npx prisma migrate deploy
-            docker compose -f docker-compose.prod.yml exec -T backend npx prisma db seed
             docker compose -f docker-compose.prod.yml up -d --remove-orphans
             docker container prune -f
             docker image prune -a -f

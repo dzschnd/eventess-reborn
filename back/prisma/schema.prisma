@@ -48,14 +48,6 @@ model EmailVerificationOtp {
   @@map("email_verification_otps")
 }
 
-model Template {
-  id          Int          @id @default(autoincrement())
-  name        String       @unique
-  invitations Invitation[]
-
-  @@map("templates")
-}
-
 model Place {
   id         Int          @id @default(autoincrement())
   address    String?
@@ -75,11 +67,10 @@ model Invitation {
   isPublished   Boolean          @default(false) @map("is_published")
   createdAt     DateTime         @default(now()) @map("created_at")
   authorId      Int              @map("author_id")
-  templateId    Int              @map("template_id")
+  templateName  String           @map("template_name")
   placeId       Int?             @map("place_id")
 
   author        User             @relation("UserInvitations", fields: [authorId], references: [id])
-  template      Template         @relation(fields: [templateId], references: [id])
   place         Place?           @relation(fields: [placeId], references: [id])
   invitationColors InvitationColor[]
   planItems     PlanItem[]
@@ -89,7 +80,6 @@ model Invitation {
   guestAnswers  GuestAnswer[]
 
   @@index([authorId])
-  @@index([templateId])
   @@index([placeId])
   @@map("invitations")
 }

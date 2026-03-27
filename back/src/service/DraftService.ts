@@ -1,5 +1,6 @@
 import type { Express } from "express";
 import prisma from "../config/prisma.js";
+import { isSupportedTemplateName } from "../constants/templates.js";
 import {
   createDraftQuery,
   createColorQuery,
@@ -18,7 +19,6 @@ import {
   getColorIdQuery,
   getFormQuestionByPositionQuery,
   getInvitationPlaceIdQuery,
-  getTemplateIdQuery,
   updateInvitationPlaceIdQuery,
   updatePlaceQuery,
   publishInvitationQuery,
@@ -46,10 +46,9 @@ export const createDraft = async (
 ): Promise<ServiceResponse<InvitationDetailsDTO>> => {
   try {
     return await prisma.$transaction(async (tx) => {
-      const template = await getTemplateIdQuery(templateName, tx);
-      if (template.length === 0) return errorResponse("Template not found");
+      if (!isSupportedTemplateName(templateName)) return errorResponse("Template not found");
 
-      const draft = await createDraftQuery(userId, template[0].id, tx);
+      const draft = await createDraftQuery(userId, templateName, tx);
       let defaultColors;
       switch (templateName) {
         case "red_velvet":
@@ -209,7 +208,7 @@ export const updateDraft = async (
         partner2Name?: string | null;
         coupleImage?: string | null;
         eventDate?: Date | null;
-        templateId?: number;
+        templateName?: string;
       } = {};
 
       if (firstPartnerName) {
@@ -226,11 +225,10 @@ export const updateDraft = async (
       }
 
       if (templateName) {
-        const template = await getTemplateIdQuery(templateName, tx);
-        if (template.length === 0) {
+        if (!isSupportedTemplateName(templateName)) {
           return errorResponse("Template not found");
         }
-        updateData.templateId = template[0].id;
+        updateData.templateName = templateName;
       }
 
       if (Object.keys(updateData).length > 0) {

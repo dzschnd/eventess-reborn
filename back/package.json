@@ -9,7 +9,6 @@
     "prisma": "prisma",
     "generate": "prisma generate",
     "migrate": "prisma migrate dev",
-    "seed": "prisma db seed",
     "build": "tsc -p tsconfig.json",
     "lint": "eslint .",
     "format": "prettier . --write",
@@ -58,8 +57,5 @@
     "tsx": "^4.19.2",
     "typescript": "^5.6.3",
     "typescript-eslint": "^8.35.1"
-  },
-  "prisma": {
-    "seed": "node prisma/seed.js"
   }
 }

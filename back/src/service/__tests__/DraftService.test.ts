@@ -6,10 +6,9 @@ const mockPrisma = {
   $transaction: async <T>(callback: (tx: object) => Promise<T>): Promise<T> => callback({}),
 };
 
-type GetTemplateIdQuery = (templateName: string, client?: object) => Promise<Array<{ id: number }>>;
 type CreateDraftQuery = (
   authorId: number,
-  templateId: number,
+  templateName: string,
   client?: object,
 ) => Promise<[Invitation]>;
 type CreateColorQuery = (colorCode: string, client?: object) => Promise<Array<{ id: number }>>;
@@ -100,7 +99,6 @@ type DeleteGuestAnswersByInvitationQuery = (
   client?: object,
 ) => Promise<[]>;
 
-const mockGetTemplateIdQuery: jest.MockedFunction<GetTemplateIdQuery> = jest.fn();
 const mockCreateDraftQuery: jest.MockedFunction<CreateDraftQuery> = jest.fn();
 const mockCreateColorQuery: jest.MockedFunction<CreateColorQuery> = jest.fn();
 const mockGetColorIdQuery: jest.MockedFunction<GetColorIdQuery> = jest.fn();
@@ -133,7 +131,6 @@ jest.unstable_mockModule("../../config/prisma.js", () => ({
 }));
 
 jest.unstable_mockModule("../../queries/InvitationQueries.js", () => ({
-  getTemplateIdQuery: mockGetTemplateIdQuery,
   createDraftQuery: mockCreateDraftQuery,
   createColorQuery: mockCreateColorQuery,
   getColorIdQuery: mockGetColorIdQuery,
@@ -189,7 +186,7 @@ const makeInvitation = (overrides: Partial<Invitation> = {}): Invitation => ({
   isPublished: false,
   createdAt: new Date(),
   authorId: 1,
-  templateId: 1,
+  templateName: "red_velvet",
   placeId: null,
   ...overrides,
 });
@@ -218,7 +215,6 @@ beforeEach(() => {
 
 describe("DraftService.createDraft", () => {
   it("returns invitation details for valid template", async () => {
-    mockGetTemplateIdQuery.mockResolvedValueOnce([{ id: 1 }]);
     mockCreateDraftQuery.mockResolvedValueOnce([makeInvitation({ id: 1 })]);
     mockGetColorIdQuery.mockResolvedValue([]);
     mockCreateColorQuery.mockResolvedValue([{ id: 1 }]);
@@ -236,8 +232,6 @@ describe("DraftService.createDraft", () => {
   });
 
   it("returns error when template not found", async () => {
-    mockGetTemplateIdQuery.mockResolvedValueOnce([]);
-
     const result = await createDraft(1, "missing_template");
 
     expect("error" in result).toBe(true);
