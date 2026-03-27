@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [ "main", "review"]
+    branches: [ "main"]
 
 env:
   REGISTRY: ghcr.io
@@ -165,8 +165,16 @@ jobs:
             EOF
 
             docker login ghcr.io -u "${GHCR_USERNAME}" -p "${GHCR_TOKEN}"
+            docker container prune -f
+            docker image prune -a -f
+            docker builder prune -a -f
+            docker system prune -f
             docker compose -f docker-compose.prod.yml pull
-            docker compose -f docker-compose.prod.yml up -d db traefik
-            docker compose -f docker-compose.prod.yml run --rm backend npx prisma migrate deploy
-            docker compose -f docker-compose.prod.yml run --rm backend npx prisma db seed
+            docker compose -f docker-compose.prod.yml up -d db traefik backend
+            docker compose -f docker-compose.prod.yml exec -T backend npx prisma migrate deploy
+            docker compose -f docker-compose.prod.yml exec -T backend npx prisma db seed
             docker compose -f docker-compose.prod.yml up -d --remove-orphans
+            docker container prune -f
+            docker image prune -a -f
+            docker builder prune -a -f
+            docker system prune -f
