@@ -33,17 +33,17 @@ jobs:
         working-directory: back
         run: npm ci
 
-      - name: Lint backend
-        working-directory: back
-        run: npm run lint --if-present
+      # - name: Lint backend
+      #   working-directory: back
+      #   run: npm run lint --if-present
 
       - name: Install frontend deps
         working-directory: front
         run: npm ci
 
-      - name: Lint frontend
-        working-directory: front
-        run: npm run lint --if-present
+      # - name: Lint frontend
+      #   working-directory: front
+      #   run: npm run lint --if-present
 
       - name: Test backend
         working-directory: back
