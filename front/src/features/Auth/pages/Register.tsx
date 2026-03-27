@@ -85,7 +85,7 @@ export const Register: FC<RegisterProps> = ({
       return;
     }
     const error = response.payload as StateError | undefined;
-    setErrorMessage(error?.status === 400 ? EMAIL_TAKEN : SERVER_ERROR);
+    setErrorMessage(error?.status === 409 ? EMAIL_TAKEN : SERVER_ERROR);
   };
 
   const isMobile = useIsMobile();

@@ -3,7 +3,7 @@ import type { Dispatch, FC, SetStateAction } from "react";
 import type { AuthPage, StateError } from "../../../types";
 import type { AppDispatch, RootState } from "../../../api/redux/store";
 import { useDispatch, useSelector } from "react-redux";
-import { requestOtp, verifyEmail } from "../../../api/service/UserService";
+import { activateUser, requestOtp } from "../../../api/service/UserService";
 import LinkToLoginOrRegister from "../components/LinkToLoginOrRegister";
 import OTPInputField from "../components/OTPInputField";
 import {
@@ -54,10 +54,10 @@ export const RegisterOtpInput: FC<OtpInputProps> = ({ setCurrentPage }) => {
       setError(SERVER_ERROR);
       return;
     }
-    const response = await dispatch(verifyEmail({ email: email, otp: otp }));
+    const response = await dispatch(activateUser({ email: email, otp: otp }));
     if (response.meta.requestStatus === "fulfilled") {
       setIsSuccess(true);
-      setTimeout(() => setCurrentPage("PASSWORD_RESET"), 1000);
+      setTimeout(() => setCurrentPage("REGISTER_SUCCESS"), 1000);
     } else if (!error && prevOtpLength < 6) {
       const errorPayload = response.payload as StateError | undefined;
       if (errorPayload?.status === 404) {

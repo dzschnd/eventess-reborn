@@ -76,7 +76,7 @@ export const Login: FC<LoginProps> = ({
     const error = response.payload as StateError | undefined;
     if (error?.status === 403) {
       dispatch(setEmail(data.email));
-      setCurrentPage("PASSWORD_RESET_OTP_INPUT");
+      setCurrentPage("REGISTER_OTP_INPUT");
       return;
     }
     if (error?.status === 400) {

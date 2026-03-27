@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "review"]
 
 env:
   REGISTRY: ghcr.io
@@ -168,4 +168,5 @@ jobs:
             docker compose -f docker-compose.prod.yml pull
             docker compose -f docker-compose.prod.yml up -d db traefik
             docker compose -f docker-compose.prod.yml run --rm backend npx prisma migrate deploy
+            docker compose -f docker-compose.prod.yml run --rm backend npx prisma db seed
             docker compose -f docker-compose.prod.yml up -d --remove-orphans

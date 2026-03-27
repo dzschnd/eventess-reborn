@@ -8,7 +8,7 @@ import clsx from "clsx";
 const CatalogPreview: FC = () => {
   const [isLinkHovered, setIsLinkHovered] = useState<boolean>(false);
   const visibleTemplates = templates.filter(
-    (template) => template.name === "nezhnost",
+    (template) => template.name !== "navsegda",
   );
 
   return (

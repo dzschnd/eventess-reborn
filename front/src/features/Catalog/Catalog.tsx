@@ -6,7 +6,7 @@ import TemplateCard from "../Templates/TemplateCard";
 
 const Catalog: FC = () => {
   const visibleTemplates = templates.filter(
-    (template) => template.name === "nezhnost",
+    (template) => template.name !== "navsegda",
   );
 
   return (
