@@ -41,15 +41,15 @@ const getErrorMessage = (error: unknown): string => {
 export const generateOTP = (): string => "000000";
 
 export const sendVerificationEmail = async (email: string, otp: string): Promise<void> => {
-	const __dirname = path.resolve();
-	const filePath = path.join(__dirname, "/src/templates/emailTemplate.html");
-	const htmlContent = fs.readFileSync(filePath, "utf-8").toString().replace("{{otp}}", otp);
-	const emailUser = process.env.EMAIL;
-	const emailPass = process.env.EMAIL_PASS;
-	const emailFrom = process.env.EMAIL_FROM;
-	if (!emailUser || !emailPass || !emailFrom) {
-		throw new Error("Email credentials are not configured");
-	}
+	// const __dirname = path.resolve();
+	// const filePath = path.join(__dirname, "/src/templates/emailTemplate.html");
+	// const htmlContent = fs.readFileSync(filePath, "utf-8").toString().replace("{{otp}}", otp);
+	// const emailUser = process.env.EMAIL;
+	// const emailPass = process.env.EMAIL_PASS;
+	// const emailFrom = process.env.EMAIL_FROM;
+	// if (!emailUser || !emailPass || !emailFrom) {
+	// 	throw new Error("Email credentials are not configured");
+	// }
 	// const transporter = nodemailer.createTransport({
 	// 	service: "gmail",
 	// 	auth: {
