@@ -20,9 +20,9 @@ import {
 import { signAccessToken, signRefreshToken } from "../utils/TokenUtils.js";
 import { getCurrentTime, getExpirationTimeMinutes } from "../utils/TimeUtils.js";
 import { errorResponse } from "../utils/errorUtils.js";
-import * as nodemailer from "nodemailer";
-import * as fs from "fs";
-import * as path from "path";
+// import * as nodemailer from "nodemailer";
+// import * as fs from "fs";
+// import * as path from "path";
 import { EMAIL_NOT_AVAILABLE } from "../messages/messages.js";
 import type { ServiceResponse } from "../types/service.js";
 
@@ -40,32 +40,11 @@ const getErrorMessage = (error: unknown): string => {
 // export const generateOTP = (): string => Math.floor(100000 + Math.random() * 900000).toString();
 export const generateOTP = (): string => "000000";
 
-export const sendVerificationEmail = async (email: string, otp: string): Promise<void> => {
-	// const __dirname = path.resolve();
-	// const filePath = path.join(__dirname, "/src/templates/emailTemplate.html");
-	// const htmlContent = fs.readFileSync(filePath, "utf-8").toString().replace("{{otp}}", otp);
-	// const emailUser = process.env.EMAIL;
-	// const emailPass = process.env.EMAIL_PASS;
-	// const emailFrom = process.env.EMAIL_FROM;
-	// if (!emailUser || !emailPass || !emailFrom) {
-	// 	throw new Error("Email credentials are not configured");
-	// }
-	// const transporter = nodemailer.createTransport({
-	// 	service: "gmail",
-	// 	auth: {
-	// 		user: emailUser,
-	// 		pass: emailPass,
-	// 	},
-	// });
-	// const mailOptions = {
-	// 	from: emailFrom,
-	// 	to: email,
-	// 	subject: "Ваш код верификации",
-	// 	html: htmlContent,
-	// };
-
-	// await transporter.sendMail(mailOptions);
-	await Promise.resolve()
+export const sendVerificationEmail = async (
+	_email: string,
+	_otp: string,
+): Promise<void> => {
+	return;
 };
 
 export const createAndSendOtp = async (
