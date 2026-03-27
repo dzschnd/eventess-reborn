@@ -20,7 +20,7 @@ import {
 import { signAccessToken, signRefreshToken } from "../utils/TokenUtils.js";
 import { getCurrentTime, getExpirationTimeMinutes } from "../utils/TimeUtils.js";
 import { errorResponse } from "../utils/errorUtils.js";
-import * as nodemailer from "nodemailer";
+// import * as nodemailer from "nodemailer";
 import * as fs from "fs";
 import * as path from "path";
 import { EMAIL_NOT_AVAILABLE } from "../messages/messages.js";
@@ -50,19 +50,19 @@ export const sendVerificationEmail = async (email: string, otp: string): Promise
 	if (!emailUser || !emailPass || !emailFrom) {
 		throw new Error("Email credentials are not configured");
 	}
-	const transporter = nodemailer.createTransport({
-		service: "gmail",
-		auth: {
-			user: emailUser,
-			pass: emailPass,
-		},
-	});
-	const mailOptions = {
-		from: emailFrom,
-		to: email,
-		subject: "Ваш код верификации",
-		html: htmlContent,
-	};
+	// const transporter = nodemailer.createTransport({
+	// 	service: "gmail",
+	// 	auth: {
+	// 		user: emailUser,
+	// 		pass: emailPass,
+	// 	},
+	// });
+	// const mailOptions = {
+	// 	from: emailFrom,
+	// 	to: email,
+	// 	subject: "Ваш код верификации",
+	// 	html: htmlContent,
+	// };
 
 	// await transporter.sendMail(mailOptions);
 	await Promise.resolve()
