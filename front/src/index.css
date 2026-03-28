@@ -121,6 +121,18 @@ select:-webkit-autofill:focus {
   color: #383838;
 }
 
+html,
+body,
+#root {
+  min-height: 100%;
+  overscroll-behavior: none;
+}
+
+html,
+body {
+  overscroll-behavior-y: none;
+}
+
 button {
   transition-property:
     color, background-color, border-color, text-decoration-color, fill, stroke;

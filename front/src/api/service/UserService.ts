@@ -35,7 +35,10 @@ export const registerUser = createAsyncThunk(
           email: payload.email,
           password: payload.password,
         },
-        { suppressErrorToast: true },
+        {
+          suppressErrorToast: true,
+          suppressGlobalLoading: true,
+        },
       );
       return userResponseSchema.parse(response.data);
     } catch (error) {
@@ -54,7 +57,10 @@ export const requestOtp = createAsyncThunk(
         {
           email: payload.email,
         },
-        { suppressErrorToast: true },
+        {
+          suppressErrorToast: true,
+          suppressGlobalLoading: true,
+        },
       );
       return messageResponseSchema.parse(response.data);
     } catch (error) {
@@ -77,6 +83,7 @@ export const loginUser = createAsyncThunk(
         {
           withCredentials: true,
           suppressErrorToast: true,
+          suppressGlobalLoading: true,
         },
       );
       return userResponseSchema.parse(response.data);
@@ -93,6 +100,7 @@ export const getUser = createAsyncThunk(
     try {
       const response = await axiosAuthorized.get(`${BASE_URL}/me`, {
         suppressErrorToastOn403: true,
+        suppressGlobalLoading: true,
       });
       return userResponseSchema.parse(response.data);
     } catch (error) {
@@ -125,7 +133,10 @@ export const verifyEmail = createAsyncThunk(
           email: payload.email,
           otp: payload.otp,
         },
-        { suppressErrorToast: true },
+        {
+          suppressErrorToast: true,
+          suppressGlobalLoading: true,
+        },
       );
       return messageResponseSchema.parse(response.data);
     } catch (error) {
@@ -148,6 +159,7 @@ export const activateUser = createAsyncThunk(
         {
           withCredentials: true,
           suppressErrorToast: true,
+          suppressGlobalLoading: true,
         },
       );
       return messageResponseSchema.parse(response.data);
@@ -167,7 +179,10 @@ export const requestPasswordReset = createAsyncThunk(
         {
           email: payload.email,
         },
-        { suppressErrorToast: true },
+        {
+          suppressErrorToast: true,
+          suppressGlobalLoading: true,
+        },
       );
       return requestPasswordResetResponseSchema.parse(response.data);
     } catch (error) {
@@ -187,7 +202,10 @@ export const resetPassword = createAsyncThunk(
           email: payload.email,
           password: payload.password,
         },
-        { suppressErrorToast: true },
+        {
+          suppressErrorToast: true,
+          suppressGlobalLoading: true,
+        },
       );
       return messageResponseSchema.parse(response.data);
     } catch (error) {

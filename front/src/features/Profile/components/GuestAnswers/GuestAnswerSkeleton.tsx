@@ -1,46 +1,33 @@
 import type { FC } from "react";
-import { currentDateISO } from "../../../../utils/dateUtils";
 
 const GuestAnswerSkeleton: FC = () => {
   return (
     <div className="mt-10">
       <div className="scrollbar-hide flex gap-[30px] overflow-x-auto pb-[3px]">
-        <span className="border-b-[2px] border-b-red-500 font-primary text-400 font-semibold leading-[1.4] text-grey-500">
-          {"firstPartnerName"} и {"secondPartnerName"} ({currentDateISO()})
-        </span>
+        <div className="h-7 w-[260px] rounded-full bg-grey-100"></div>
+        <div className="h-7 w-[220px] rounded-full bg-grey-100"></div>
       </div>
 
-      <div>
-        <div className="mt-[30px] flex flex-col gap-5">
-          <dl className="flex flex-col gap-5 rounded-[20px] bg-green-50 bg-grey-50 p-5 md:p-[30px]">
-            <div className="flex flex-col sm:flex-row">
-              <dt className="mb-2.5 font-primary text-400 font-semibold leading-[1.4] text-grey-500">
-                Имя:&nbsp;
-              </dt>
-              <dd className="font-primary text-400 font-light leading-[1.4] text-grey-500">
-                {"guest_name"}
-              </dd>
+      <div className="mt-[30px] flex flex-col gap-5">
+        {[0, 1].map((item) => (
+          <div
+            key={item}
+            className="flex flex-col gap-5 rounded-[20px] bg-grey-50 p-5 md:p-[30px]"
+          >
+            <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center">
+              <div className="h-5 w-16 rounded-full bg-grey-100"></div>
+              <div className="h-5 w-[180px] rounded-full bg-grey-100"></div>
             </div>
-            <div className="flex flex-col sm:flex-row">
-              <dt className="mb-2.5 font-primary text-400 font-semibold leading-[1.4] text-grey-500">
-                Присутствие:&nbsp;
-              </dt>
-              <dd className="font-primary text-400 font-light leading-[1.4] text-grey-500">
-                {"С удовольствием приеду (приедем)"}
-              </dd>
+            <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center">
+              <div className="h-5 w-28 rounded-full bg-grey-100"></div>
+              <div className="h-5 w-[220px] rounded-full bg-grey-100"></div>
             </div>
-            <div>
-              <div className="flex flex-col sm:flex-row">
-                <dt className="mb-2.5 font-primary text-400 font-semibold leading-[1.4] text-grey-500">
-                  {"question"}:&nbsp;
-                </dt>
-                <dd className="font-primary text-400 font-light leading-[1.4] text-grey-500">
-                  {"groupedAnswers.join(', ')"}
-                </dd>
-              </div>
+            <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center">
+              <div className="h-5 w-24 rounded-full bg-grey-100"></div>
+              <div className="h-5 w-[200px] rounded-full bg-grey-100"></div>
             </div>
-          </dl>
-        </div>
+          </div>
+        ))}
       </div>
     </div>
   );

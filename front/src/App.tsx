@@ -90,6 +90,10 @@ const App = () => {
 
             <Route path={"/templates/test"} element={<TestTemplate />} />
             <Route
+              path={"/templates/navsegda"}
+              element={<NezhnostTemplate />}
+            />
+            <Route
               path={"/templates/red-velvet"}
               element={<RedVelvetTemplate />}
             />

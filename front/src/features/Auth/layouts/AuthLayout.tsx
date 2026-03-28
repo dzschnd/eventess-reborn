@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Dispatch, FC, ReactNode, SetStateAction } from "react";
 import clsx from "clsx";
 import { MobileClose } from "../../../assets/svg/auth/MobileClose";
@@ -43,6 +43,10 @@ export const AuthLayout: FC<AuthLayoutProps> = ({
 }) => {
   const overlayRef = useRef<HTMLDivElement>(null);
   const [, setIsWidePopup] = useState<boolean>(false);
+
+  useEffect(() => {
+    overlayRef.current?.focus({ preventScroll: true });
+  }, [currentPage]);
 
   const renderPage = (): ReactNode => {
     switch (currentPage) {
@@ -95,21 +99,24 @@ export const AuthLayout: FC<AuthLayoutProps> = ({
   return (
     <div
       className={
-        "absolute z-50 flex h-full w-full items-end bg-black--opaque backdrop-blur-[4px] sm:items-center sm:justify-center md:justify-end"
+        "fixed inset-0 z-[60] flex min-h-[100dvh] w-full items-end bg-black--opaque backdrop-blur-[4px] sm:items-center sm:justify-center md:justify-end"
       }
     >
       <div
         ref={overlayRef}
+        role={"dialog"}
+        aria-modal={"true"}
+        tabIndex={-1}
         className={clsx(
-          "w-full sm:w-auto md:w-[630px]",
+          "relative flex min-h-[100dvh] w-full flex-col overflow-y-auto bg-white sm:min-h-0 sm:w-auto md:h-full md:w-[630px]",
           "[&>div]:w-full [&>div]:sm:pt-[46px] [&>div]:md:pt-0",
-          "sm:h-min md:h-full",
+          "sm:h-min",
           "px-[16px] py-[30px] sm:px-[30px] md:px-[122px]",
           "md:flex md:items-center md:justify-center",
           "rounded-t-20 sm:rounded-b-20 md:rounded-none",
-          "absolute bg-white",
         )}
       >
+        {renderPage()}
         <button
           aria-label={"Close popup"}
           className={"absolute right-4 top-[-34px] sm:hidden"}
@@ -128,8 +135,6 @@ export const AuthLayout: FC<AuthLayoutProps> = ({
         >
           <Close />
         </button>
-
-        {renderPage()}
       </div>
     </div>
   );

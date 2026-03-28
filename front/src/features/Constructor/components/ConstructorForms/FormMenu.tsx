@@ -2,13 +2,12 @@ import { useState } from "react";
 import type { FC, PropsWithChildren } from "react";
 import cross from "../../../../assetsOld/buttonIcons/cross.png";
 import arrowRight from "../../../../assetsOld/buttonIcons/arrowRight.png";
-import templatePreview from "../../../../assetsOld/templates/redVelvet/templatePreview.png";
 import { Link } from "react-router-dom";
 import { constructorPages } from "../../layouts/ConstructorLayout";
 import { updateDraft } from "../../../../api/service/DraftService";
 import type { AppDispatch, RootState } from "../../../../api/redux/store";
 import { useDispatch, useSelector } from "react-redux";
-import { templates } from "../../../../constants";
+import { availableTemplates } from "../../../../constants";
 
 interface FormLayoutProps extends PropsWithChildren {
   pageIndex: number;
@@ -96,15 +95,18 @@ const FormMenu: FC<FormLayoutProps> = ({ pageIndex, setIsMenuOpen }) => {
             </button>
             {isChangeTemplateOpen && (
               <div className="mb-5 grid grid-cols-2 gap-5">
-                {templates.map((template) => (
-                  <div className="flex flex-col gap-4 rounded-[10px] bg-grey-50 p-2">
+                {availableTemplates.map((template) => (
+                  <div
+                    key={template.name}
+                    className="flex flex-col gap-4 rounded-[10px] bg-grey-50 p-2"
+                  >
                     <img
-                      src={templatePreview}
-                      alt={template.name}
+                      src={template.previewImage}
+                      alt={template.displayedName}
                       className="h-[180px] w-[155px]"
                     />
                     <div className="flex justify-between">
-                      <span>"{template.name}"</span>
+                      <span>"{template.displayedName}"</span>
                       <span>{template.price} ₽</span>
                     </div>
                     <div className="flex flex-col gap-[6px]">

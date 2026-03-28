@@ -1,5 +1,13 @@
 # Eventess
 
+## TODO
+- Telegram link on landing page
+- Whatsapp link on landing
+- Email on landing
+- Privacy policy
+- Overscroll bounce in templates
+
+
 ## Docker (stack)
 
 Services:

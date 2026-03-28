@@ -2,14 +2,11 @@ import { useState } from "react";
 import type { FC } from "react";
 import TemplateCard from "../Templates/TemplateCard";
 import { Link } from "react-router-dom";
-import { templates } from "../../constants";
+import { availableTemplates } from "../../constants";
 import { LinkArrowIcon } from "../../assets/svg/LinkArrowIcon";
 import clsx from "clsx";
 const CatalogPreview: FC = () => {
   const [isLinkHovered, setIsLinkHovered] = useState<boolean>(false);
-  const visibleTemplates = templates.filter(
-    (template) => template.name !== "navsegda",
-  );
 
   return (
     <section>
@@ -25,7 +22,7 @@ const CatalogPreview: FC = () => {
           "grid grid-cols-2 gap-x-3 gap-y-8 sm:grid-cols-3 sm:gap-x-5 md:grid-cols-4"
         }
       >
-        {visibleTemplates.map((template, index) => (
+        {availableTemplates.map((template, index) => (
           <div
             key={index}
             className={clsx(

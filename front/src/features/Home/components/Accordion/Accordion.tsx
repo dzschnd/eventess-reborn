@@ -35,7 +35,10 @@ const Accordion: FC<AccordionProps> = ({ items }) => {
           />
           <label
             htmlFor={`checkbox-${index}`}
-            className={"flex cursor-pointer justify-between gap-3"}
+            className={clsx(
+              "flex cursor-pointer justify-between gap-3 pb-[24px] -mb-[24px]",
+              index > 0 && "pt-[24px] -mt-[24px]",
+            )}
           >
             <h4
               className={

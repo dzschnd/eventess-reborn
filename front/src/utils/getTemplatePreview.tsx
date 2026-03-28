@@ -12,6 +12,7 @@ export const getTemplatePreview = (
   props: TemplatePreviewProps,
 ) => {
   switch (templateName) {
+    case "navsegda":
     case "nezhnost":
       return (
         <NezhnostInvitation

@@ -36,11 +36,26 @@ const Features: FC = () => {
 
   const createDefaultDraft = useCreateDefaultDraft();
   const isMobile = useIsMobile();
+
   useEffect(() => {
-    blocks.forEach((block) => {
-      const image = new Image();
-      image.src = block.image;
-    });
+    const preloadImages = () => {
+      blocks.forEach((block) => {
+        const image = new Image();
+        image.decoding = "async";
+        image.src = block.image;
+        void image.decode().catch(() => undefined);
+      });
+    };
+
+    if (document.readyState === "complete") {
+      preloadImages();
+      return;
+    }
+
+    window.addEventListener("load", preloadImages, { once: true });
+    return () => {
+      window.removeEventListener("load", preloadImages);
+    };
   }, []);
 
   return (

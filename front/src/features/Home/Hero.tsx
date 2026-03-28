@@ -28,6 +28,9 @@ const Hero: FC = () => {
         <img
           alt={""}
           src={heroImage}
+          loading={"eager"}
+          fetchPriority={"high"}
+          decoding={"async"}
           className={
             "absolute min-h-full min-w-full rounded-t-[300px] object-cover"
           }

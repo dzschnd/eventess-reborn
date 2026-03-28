@@ -1,14 +1,10 @@
 import type { FC } from "react";
 import { PageLayout } from "../../layouts/PageLayout";
 import Cta from "../Home/Cta";
-import { templates } from "../../constants";
+import { availableTemplates } from "../../constants";
 import TemplateCard from "../Templates/TemplateCard";
 
 const Catalog: FC = () => {
-  const visibleTemplates = templates.filter(
-    (template) => template.name !== "navsegda",
-  );
-
   return (
     <PageLayout
       className={
@@ -28,7 +24,7 @@ const Catalog: FC = () => {
             "grid grid-cols-2 gap-x-3 gap-y-8 sm:grid-cols-3 sm:gap-x-5 md:grid-cols-4"
           }
         >
-          {visibleTemplates.map((template, index) => (
+          {availableTemplates.map((template, index) => (
             <div key={index}>
               <TemplateCard
                 name={template.name}

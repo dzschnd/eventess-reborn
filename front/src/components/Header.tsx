@@ -81,45 +81,57 @@ const Header: FC = () => {
       )}
       <div
         className={clsx(
-          "shadow-custom-2 fixed z-40 flex h-full max-h-[56px] w-full items-center justify-between px-4 md:max-h-[60px]",
+          "shadow-custom-2 fixed z-40 flex h-full max-h-[56px] w-full items-center px-4 md:max-h-[60px]",
           isMenuOpen ? "bg-white" : "backdrop-blur-[15px]",
         )}
       >
-        <div className={"hidden gap-3 md:flex"}>
-          <Link to={"/"}>
-            <Button
-              borderRadius={42}
-              message={"ГЛАВНАЯ"}
-              className={"h-[36px] px-[24px] text-300"}
-            />
-          </Link>
-          <Link to={"/catalog"}>
-            <Button
-              borderRadius={42}
-              message={"КАТАЛОГ"}
-              className={"h-[36px] px-[24px] text-300"}
-            />
-          </Link>
-          <Link to={"/blog"}>
-            <Button
-              borderRadius={42}
-              message={"БЛОГ"}
-              className={"h-[36px] px-[24px] text-300"}
-            />
-          </Link>
-        </div>
-        <div className={"flex items-center gap-4"}>
+        <div className={"flex flex-1 items-center justify-start gap-4"}>
           <button
             className={clsx("md:hidden")}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? <CloseMenuIcon /> : <BurgerMenuIcon />}
           </button>
-          <Link to={"/"}>
-            <Logo desktopWidth={108} width={76} />
-          </Link>
+          <div className={"hidden gap-3 md:flex"}>
+            <Link
+              to={"/"}
+              className={"inline-flex [clip-path:inset(0_round_42px)]"}
+            >
+              <Button
+                borderRadius={42}
+                message={"ГЛАВНАЯ"}
+                className={"h-[36px] px-[24px] text-300"}
+              />
+            </Link>
+            <Link
+              to={"/catalog"}
+              className={"inline-flex [clip-path:inset(0_round_42px)]"}
+            >
+              <Button
+                borderRadius={42}
+                message={"КАТАЛОГ"}
+                className={"h-[36px] px-[24px] text-300"}
+              />
+            </Link>
+            <Link
+              to={"/blog"}
+              className={"inline-flex [clip-path:inset(0_round_42px)]"}
+            >
+              <Button
+                borderRadius={42}
+                message={"БЛОГ"}
+                className={"h-[36px] px-[24px] text-300"}
+              />
+            </Link>
+          </div>
         </div>
-        <div className={"flex items-center gap-3"}>
+        <Link
+          to={"/"}
+          className={"absolute left-1/2 -translate-x-1/2 transform"}
+        >
+          <Logo desktopWidth={108} width={76} />
+        </Link>
+        <div className={"flex flex-1 items-center justify-end gap-3"}>
           <Button
             borderRadius={42}
             onClick={createDefaultDraft}

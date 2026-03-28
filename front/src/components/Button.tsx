@@ -8,15 +8,26 @@ const Button: FC<{
   onClick?: () => void;
   inverted?: boolean;
   className?: string;
-}> = ({ message, type, borderRadius, onClick, inverted, className }) => {
+  disabled?: boolean;
+}> = ({
+  message,
+  type,
+  borderRadius,
+  onClick,
+  inverted,
+  className,
+  disabled,
+}) => {
   return (
     <button
       type={type ?? "button"}
+      disabled={disabled}
       className={clsx(
         `rounded-[${borderRadius}px] border border-primary text-300 font-semibold`,
         inverted
           ? "bg-primary text-white hover:bg-primary-700"
           : "text-primary hover:bg-primary hover:text-white",
+        disabled && "cursor-not-allowed opacity-70",
         className,
       )}
       onClick={onClick}

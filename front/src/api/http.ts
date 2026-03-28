@@ -176,6 +176,7 @@ apiAuth.interceptors.response.use(
             withCredentials: true,
             suppressErrorToast: true,
             suppressErrorToastOn403: true,
+            suppressGlobalLoading: true,
           },
         );
         return apiAuth(originalRequest);

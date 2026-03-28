@@ -57,3 +57,5 @@ export const templates: TemplateInfo[] = [
     previewImage: nezhnostPreview,
   },
 ];
+
+export const availableTemplates: TemplateInfo[] = templates;
