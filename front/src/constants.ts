@@ -14,48 +14,41 @@ export const whatsappLink = "#";
 export const defaultTemplateName = "nezhnost";
 
 export const templates: TemplateInfo[] = [
-  {
-    name: "navsegda",
-    displayedName: "Навсегда",
-    link: "/templates/navsegda",
-    price: 3500,
-    previewImage: navsegdaPreview,
-  },
-  {
-    name: "pinkVibe",
-    displayedName: "Pink Vibe",
-    link: "/templates/pinkVibe",
-    price: 3500,
-    previewImage: pinkVibePreview,
-  },
-  {
-    name: "minimalism",
-    displayedName: "Минимализм",
-    link: "/templates/minimalism",
-    price: 3500,
-    previewImage: minimalismPreview,
-  },
-  {
-    name: "nezhnost",
-    displayedName: "Нежность",
-    link: "/templates/nezhnost",
-    price: 4000,
-    previewImage: nezhnostPreview,
-  },
-  {
-    name: "red_velvet",
-    displayedName: "Red Velvet",
-    link: "/templates/red-velvet",
-    price: 3500,
-    previewImage: nezhnostPreview,
-  },
-  {
-    name: "test",
-    displayedName: "TEST",
-    link: "/templates/test",
-    price: 500,
-    previewImage: nezhnostPreview,
-  },
+	{
+		name: "navsegda",
+		displayedName: "Навсегда",
+		link: "/templates/navsegda",
+		price: 3500,
+		previewImage: navsegdaPreview,
+	},
+	{
+		name: "pinkVibe",
+		displayedName: "Pink Vibe",
+		link: "/templates/pinkVibe",
+		price: 3500,
+		previewImage: pinkVibePreview,
+	},
+	{
+		name: "minimalism",
+		displayedName: "Минимализм",
+		link: "/templates/minimalism",
+		price: 3500,
+		previewImage: minimalismPreview,
+	},
+	{
+		name: "nezhnost",
+		displayedName: "Нежность",
+		link: "/templates/nezhnost",
+		price: 4000,
+		previewImage: nezhnostPreview,
+	},
+	{
+		name: "red_velvet",
+		displayedName: "Red Velvet",
+		link: "/templates/red-velvet",
+		price: 3500,
+		previewImage: nezhnostPreview,
+	},
 ];
 
 export const availableTemplates: TemplateInfo[] = templates;
