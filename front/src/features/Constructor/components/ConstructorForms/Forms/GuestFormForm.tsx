@@ -10,6 +10,7 @@ import { updateDraft } from "../../../../../api/service/DraftService";
 import GuestFormInput from "../Inputs/GuestFormInput";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { draftUpdateBaseSchema } from "../../../../../shared/schemas/draft";
+import { CalendarDays, Info, LockKeyhole } from "lucide-react";
 
 interface FormInput {
   questions:
@@ -35,11 +36,39 @@ const guestFormSchema = draftUpdateBaseSchema.pick({
   answers: true,
 });
 
+const GuestFormLockedField: FC<{
+  label: string;
+  value: string;
+  icon: "lock" | "calendar";
+}> = ({ label, value, icon }) => {
+  const Icon = icon === "lock" ? LockKeyhole : CalendarDays;
+
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center gap-2">
+        <span className="font-primary text-[12px] font-semibold leading-[1.2] text-grey-400">
+          {label}
+        </span>
+        <Info className="h-4 w-4 text-black" strokeWidth={2} />
+      </div>
+      <div className="flex h-11 items-center gap-4 rounded-[44px] border border-grey-100 bg-grey-50 px-4">
+        <Icon className="h-5 w-5 shrink-0 text-grey-300" strokeWidth={2} />
+        <span className="font-primary text-[14px] font-normal text-grey-300">
+          {value}
+        </span>
+      </div>
+    </div>
+  );
+};
+
 const GuestFormForm: FC = () => {
   const dispatch: AppDispatch = useDispatch();
-  const { id, questions, answers } = useSelector(
+  const { id, questions, answers, eventDate } = useSelector(
     (state: RootState) => state.draft,
   );
+  const displayedEventDate = eventDate
+    ? eventDate.split("-").reverse().join(".")
+    : "дд.мм.гггг";
 
   const { control, getValues, setValue } = useForm<FormInput>({
     resolver: zodResolver(guestFormSchema),
@@ -276,6 +305,24 @@ const GuestFormForm: FC = () => {
 
   return (
     <FormLayout pageIndex={6} description={"Узнайте побольше о ваших гостях!"}>
+      <div className="flex flex-col gap-5">
+        <GuestFormLockedField
+          label="Имя гостя/гостей"
+          value="Этот вопрос нельзя удалить"
+          icon="lock"
+        />
+        <GuestFormLockedField
+          label="Присутствие на торжестве"
+          value="Этот вопрос нельзя удалить"
+          icon="lock"
+        />
+        <GuestFormLockedField
+          label="Ответить до"
+          value={displayedEventDate}
+          icon="calendar"
+        />
+      </div>
+
       {questionFields.map((field, index) => (
         <Controller
           key={field.id}

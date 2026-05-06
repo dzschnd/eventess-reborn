@@ -1,6 +1,5 @@
 import { useRef } from "react";
 import type { FC } from "react";
-import heartIcon from "../../../../../assetsOld/formIcons/heart.png";
 import ImageSelector from "../Inputs/ImageSelector";
 import TextInput from "../Inputs/TextInput";
 import FormLayout from "../../../layouts/FormLayout";
@@ -118,8 +117,8 @@ const NamesForm: FC = () => {
           <TextInput
             {...field}
             label={"Как зовут невесту?"}
+            labelClassName="font-semibold"
             placeholder={"Невеста"}
-            icon={heartIcon}
             onChange={(e) => {
               field.onChange(e);
               handleUpdateLocalDraft();
@@ -139,8 +138,8 @@ const NamesForm: FC = () => {
           <TextInput
             {...field}
             label={"Как зовут жениха?"}
+            labelClassName="font-semibold"
             placeholder={"Жених"}
-            icon={heartIcon}
             onChange={(e) => {
               field.onChange(e);
               handleUpdateLocalDraft();

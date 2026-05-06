@@ -2,7 +2,6 @@ import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 const mockPrisma = {
     $transaction: async (callback) => callback({}),
 };
-const mockGetTemplateIdQuery = jest.fn();
 const mockCreateDraftQuery = jest.fn();
 const mockCreateColorQuery = jest.fn();
 const mockGetColorIdQuery = jest.fn();
@@ -25,11 +24,11 @@ const mockGetFormQuestionByPositionQuery = jest.fn();
 const mockCreateFormAnswerQuery = jest.fn();
 const mockDeleteInvitation = jest.fn();
 const mockGetAllInvitationsQuery = jest.fn();
+const mockDeleteGuestAnswersByInvitationQuery = jest.fn();
 jest.unstable_mockModule("../../config/prisma.js", () => ({
     default: mockPrisma,
 }));
 jest.unstable_mockModule("../../queries/InvitationQueries.js", () => ({
-    getTemplateIdQuery: mockGetTemplateIdQuery,
     createDraftQuery: mockCreateDraftQuery,
     createColorQuery: mockCreateColorQuery,
     getColorIdQuery: mockGetColorIdQuery,
@@ -52,6 +51,7 @@ jest.unstable_mockModule("../../queries/InvitationQueries.js", () => ({
     createFormAnswerQuery: mockCreateFormAnswerQuery,
     deleteInvitation: mockDeleteInvitation,
     getAllInvitationsQuery: mockGetAllInvitationsQuery,
+    deleteGuestAnswersByInvitationQuery: mockDeleteGuestAnswersByInvitationQuery,
 }));
 const mockGetInvitationDetails = jest.fn();
 jest.unstable_mockModule("../../utils/InvitationUtils.js", () => ({
@@ -60,6 +60,7 @@ jest.unstable_mockModule("../../utils/InvitationUtils.js", () => ({
 jest.unstable_mockModule("../../utils/R2Utils.js", () => ({
     r2: {},
     getParams: () => ({}),
+    isR2Configured: () => false,
     cleanupOldImages: async () => { },
     cleanupAllImages: async () => { },
 }));
@@ -73,7 +74,7 @@ const makeInvitation = (overrides = {}) => ({
     isPublished: false,
     createdAt: new Date(),
     authorId: 1,
-    templateId: 1,
+    templateName: "red_velvet",
     placeId: null,
     ...overrides,
 });
@@ -99,7 +100,6 @@ beforeEach(() => {
 });
 describe("DraftService.createDraft", () => {
     it("returns invitation details for valid template", async () => {
-        mockGetTemplateIdQuery.mockResolvedValueOnce([{ id: 1 }]);
         mockCreateDraftQuery.mockResolvedValueOnce([makeInvitation({ id: 1 })]);
         mockGetColorIdQuery.mockResolvedValue([]);
         mockCreateColorQuery.mockResolvedValue([{ id: 1 }]);
@@ -114,7 +114,6 @@ describe("DraftService.createDraft", () => {
         }
     });
     it("returns error when template not found", async () => {
-        mockGetTemplateIdQuery.mockResolvedValueOnce([]);
         const result = await createDraft(1, "missing_template");
         expect("error" in result).toBe(true);
         if ("error" in result) {

@@ -98,7 +98,7 @@ const DisableBlockToggle: FC<DisableBlockToggleProps> = ({
         type="checkbox"
         className="peer sr-only"
       />
-      <div className="peer relative h-[20px] w-[36px] rounded-full bg-red-100 shadow-toggle-ball after:absolute after:left-[3px] after:top-[3px] after:h-[14px] after:w-[14px] after:rounded-full after:bg-white after:transition-all peer-checked:after:translate-x-4"></div>
+      <div className="peer relative h-[20px] w-[36px] rounded-full bg-red-100 shadow-[0_1px_3px_rgba(86,63,58,0.08)] after:absolute after:left-[3px] after:top-[3px] after:h-[14px] after:w-[14px] after:rounded-full after:bg-white after:transition-all peer-checked:after:translate-x-4"></div>
     </label>
   );
 };

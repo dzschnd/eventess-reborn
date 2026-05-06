@@ -1,46 +1,35 @@
 import { useState } from "react";
 import type { FC, FormEvent } from "react";
-import pencil from "../../../../assetsOld/editPencil.png";
-import cross from "../../../../assetsOld/buttonIcons/cross.png";
-import check from "../../../../assetsOld/formIcons/checkmark.svg";
+import { Check, Info, Mail } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../../../../api/redux/hooks";
 import InputField from "../../../Auth/components/InputField";
-import envelopeIcon from "../../../../assetsOld/formIcons/envelope.png";
 import { useForm } from "react-hook-form";
 import {
   changeEmail,
-  changeName,
   requestEmailChange,
 } from "../../../../api/service/UserService";
 import FormErrorMessage from "../../../../components/FormErrorMessage";
 import OtpInput from "./OtpInput";
-import {
-  changeNameSchema,
-  requestChangeEmailSchema,
-} from "../../../../shared/schemas/auth";
+import { requestChangeEmailSchema } from "../../../../shared/schemas/auth";
 import type { StateError } from "../../../../types";
 
 const ProfileInfo: FC = () => {
   const dispatch = useAppDispatch();
   const [isEmailInputOpen, setIsEmailInputOpen] = useState<boolean>(false);
-  const [isNameInputOpen, setIsNameInputOpen] = useState<boolean>(false);
   const [isOtpInputOpen, setIsOtpInputOpen] = useState<boolean>(false);
   const [isOtpInputLoading, setIsOtpInputLoading] = useState<boolean>(false);
-  const [nameError, setNameError] = useState<string>("");
   const [emailError, setEmailError] = useState<string>("");
   const [isInvalidOtpError, setIsInvalidOtpError] = useState("");
   const [isSuccessfulEmailChange, setIsSuccessfulEmailChange] = useState(false);
   const [prevOtpLength, setPrevOtpLength] = useState(0);
-  const { email, name } = useAppSelector((state) => state.user);
+  const { email } = useAppSelector((state) => state.user);
 
   const { register, getValues, setValue } = useForm<{
     email: string;
-    name: string;
   }>({
     mode: "onSubmit",
     defaultValues: {
       email: email ? email : "",
-      name: name ? name : "",
     },
   });
 
@@ -110,33 +99,6 @@ const ProfileInfo: FC = () => {
     }
   };
 
-  const handleChangeName = async (e: FormEvent) => {
-    e.preventDefault();
-    setNameError("");
-    const newName = getValues("name");
-    if (newName.trim() === "") {
-      setValue("name", name ?? "");
-      setIsNameInputOpen(false);
-      return;
-    }
-    const nameValidation = changeNameSchema.safeParse({
-      newName: newName.trim(),
-    });
-    if (!nameValidation.success) {
-      setNameError(
-        nameValidation.error.issues[0]?.message ?? "Пожалуйста, укажите имя",
-      );
-      return;
-    }
-    const response = await dispatch(changeName({ newName: newName.trim() }));
-    if (response.meta.requestStatus !== "fulfilled") {
-      const errorPayload = response.payload as StateError | undefined;
-      setNameError(errorPayload?.message ?? "Произошла ошибка");
-      setValue("name", name ?? "");
-    }
-    setIsNameInputOpen(false);
-  };
-
   const handleCancelOtpInput = () => {
     setIsOtpInputOpen(false);
     setIsEmailInputOpen(false);
@@ -144,7 +106,7 @@ const ProfileInfo: FC = () => {
   };
 
   return (
-    <div className="max-w-[367px]">
+    <div className="w-full">
       {isOtpInputOpen && (
         <OtpInput
           setIsError={setIsInvalidOtpError}
@@ -155,63 +117,77 @@ const ProfileInfo: FC = () => {
           onCancel={handleCancelOtpInput}
         />
       )}
-      <h1 className="font-primary text-900 font-semibold leading-[1.21] text-grey-500">
+      <h1 className="font-primary text-800 font-semibold leading-[1.2] text-grey-500">
         Личный кабинет
       </h1>
-      <div className="relative mt-10 flex flex-col gap-5">
-        <div className="flex gap-5">
-          <span className="font-primary text-400 font-light leading-[1.4] text-grey-300">
-            Имя:
-          </span>
-          {isNameInputOpen ? (
-            <form onSubmit={handleChangeName}>
-              <div className="flex gap-2.5">
-                <InputField
-                  {...register("name")}
-                  id={"name"}
-                  type={"text"}
-                  placeholder={"Пользователь"}
-                  icon={envelopeIcon}
-                />
-                <button>
-                  <img src={check} alt="Edit" className="max-h-6 max-w-6" />
-                </button>
-                <button type={"button"}>
-                  <img
-                    src={cross}
-                    alt="Edit"
-                    className="max-h-6 max-w-6"
-                    onClick={() => {
-                      setValue("name", name ?? "");
-                      setIsNameInputOpen(false);
-                    }}
-                  />
-                </button>
-              </div>
-            </form>
-          ) : (
-            <div className="flex gap-2.5">
-              <span className="font font-grey-500 font-primary text-400 font-normal leading-[1.4]">
-                {name}
-              </span>
-              <button
-                onClick={() => {
-                  setIsNameInputOpen(true);
-                  setNameError("");
-                }}
-              >
-                <img src={pencil} alt="Edit" className="max-h-6 max-w-6" />
-              </button>
+
+      <section className="mt-[30px] bg-white">
+        <div className="flex flex-col gap-3 border-b border-[#e8e8ed] pb-5">
+          <h2 className="font-primary text-500 font-semibold leading-[1.2] text-grey-500">
+            Электронная почта
+          </h2>
+          <p className="text-300 leading-[1.4] text-grey-400">
+            Эта почта используется для входа, уведомлений и восстановления
+            доступа.
+          </p>
+        </div>
+
+        <div className="flex flex-col gap-5 border-b border-[#e8e8ed] py-6 md:flex-row md:items-center md:justify-between">
+          <div className="flex items-center gap-4">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#f3f4f5] text-grey-500">
+              <Mail size={17} strokeWidth={1.8} />
             </div>
+            <div className="flex min-w-0 flex-col gap-2">
+              <span className="text-300 leading-[1.2] text-grey-300">
+                Текущий email
+              </span>
+              <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
+                <span className="break-all font-primary text-400 font-semibold leading-[1.3] text-grey-500 md:text-500">
+                  {email}
+                </span>
+                <span className="inline-flex w-fit items-center gap-2 rounded-[8px] bg-[#e7f5ee] px-3 py-2 text-200 font-semibold leading-[1] text-[#147846]">
+                  <Check size={16} strokeWidth={2} className="text-[#147846]" />
+                  Подтверждена
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {!isEmailInputOpen && (
+            <button
+              type="button"
+              onClick={() => {
+                setIsEmailInputOpen(true);
+                setEmailError("");
+              }}
+              className="h-9 rounded-42 border border-primary bg-primary px-6 font-primary text-300 font-semibold text-white transition-colors duration-200 hover:bg-primary-700"
+            >
+              Сменить почту
+            </button>
           )}
         </div>
-        <div className="flex gap-5">
-          <span className="font-primary text-400 font-light leading-[1.4] text-grey-300">
-            Email:
-          </span>
-          {isEmailInputOpen ? (
-            <form onSubmit={handleRequestChangeEmail}>
-              <div className="flex gap-2.5">
+
+        {isEmailInputOpen && (
+          <form
+            onSubmit={handleRequestChangeEmail}
+            className="mt-5 grid gap-5 rounded-20 border border-grey-75 bg-[#fafafa] p-5 md:grid-cols-[minmax(0,1fr)_300px]"
+          >
+            <div className="flex flex-col gap-5">
+              <div className="flex flex-col gap-2">
+                <h3 className="font-primary text-400 font-semibold leading-[1.2] text-grey-500">
+                  Смена электронной почты
+                </h3>
+                <p className="text-300 leading-[1.4] text-grey-400">
+                  Мы отправим письмо с подтверждением на новый адрес.
+                </p>
+              </div>
+              <div className="relative">
+                <label
+                  htmlFor="email"
+                  className="mb-2 block text-300 font-normal leading-[1.2] text-grey-500"
+                >
+                  Новый email <span className="text-red-500">*</span>
+                </label>
                 <InputField
                   {...register("email", {
                     pattern: {
@@ -222,52 +198,55 @@ const ProfileInfo: FC = () => {
                   })}
                   id={"email"}
                   type={"email"}
-                  placeholder={"murmur@eventess.ru"}
-                  icon={envelopeIcon}
+                  placeholder={"Введите новый email"}
                   disabled={isOtpInputLoading}
+                  inputClassName="h-11 rounded-30 border border-grey-100 bg-white px-4 font-primary text-400 font-normal text-grey-500 placeholder:text-grey-200 focus:border-blue-400"
                 />
-                <button disabled={isOtpInputLoading}>
-                  <img src={check} alt="Edit" className="max-h-6 max-w-6" />
-                </button>
+                {emailError && <FormErrorMessage message={emailError} />}
+              </div>
+              <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
                 <button
-                  type={"button"}
+                  type="button"
                   disabled={isOtpInputLoading}
                   onClick={() => {
                     setValue("email", email ?? "");
                     setIsEmailInputOpen(false);
-                  }}
-                >
-                  <img src={cross} alt="Edit" className="max-h-6 max-w-6" />
-                </button>
-              </div>
-            </form>
-          ) : (
-            <div className="flex gap-2.5">
-              <span className="font font-grey-500 font-primary text-400 font-normal leading-[1.4]">
-                {email}
-              </span>
-              <button>
-                <img
-                  src={pencil}
-                  alt="Edit"
-                  className="max-h-6 max-w-6"
-                  onClick={() => {
-                    setIsEmailInputOpen(true);
                     setEmailError("");
                   }}
-                />
-              </button>
+                  className="h-9 rounded-42 px-6 font-primary text-300 font-semibold text-primary transition-colors duration-200 hover:bg-primary-50"
+                >
+                  Отменить
+                </button>
+                <button
+                  type="submit"
+                  disabled={isOtpInputLoading}
+                  className="h-9 rounded-42 bg-primary px-6 font-primary text-300 font-semibold text-white transition-colors duration-200 hover:bg-primary-700 disabled:cursor-not-allowed disabled:opacity-70"
+                >
+                  Отправить письмо
+                </button>
+              </div>
             </div>
-          )}
-        </div>
-        {nameError && <FormErrorMessage message={nameError} />}
-        {emailError && (
-          <FormErrorMessage
-            className={`${nameError ? "translate-y-[200%]" : ""}`}
-            message={emailError}
-          />
+
+            <div className="flex gap-3 rounded-20 bg-white p-4">
+              <Info
+                size={24}
+                strokeWidth={1.8}
+                className="shrink-0 text-primary"
+              />
+              <div className="flex flex-col gap-2">
+                <h4 className="font-primary text-300 font-semibold leading-[1.2] text-grey-500">
+                  Как это работает
+                </h4>
+                <p className="text-300 leading-[1.4] text-grey-400">
+                  На новый email будет отправлено письмо с подтверждением.
+                  После подтверждения мы обновим ваш адрес.
+                </p>
+              </div>
+            </div>
+          </form>
         )}
-      </div>
+
+      </section>
     </div>
   );
 };

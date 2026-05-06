@@ -2,7 +2,6 @@ import { useState } from "react";
 import type { FC, KeyboardEvent } from "react";
 import InputLabel from "../../../Auth/components/InputLabel";
 import InputField from "../../../Auth/components/InputField";
-import lockIcon from "../../../../assetsOld/formIcons/lock.png";
 import SubmitButton from "../../../Auth/components/SubmitButton";
 import { useForm } from "react-hook-form";
 import type { SubmitHandler } from "react-hook-form";
@@ -65,37 +64,43 @@ const ChangePassword: FC = () => {
 
   return (
     <div className="max-w-[367px]">
-      <h2 className="font-primary text-800 font-normal leading-[1.2] text-grey-500">
+      <h2 className="font-primary text-600 font-semibold leading-[1.2] text-grey-500">
         Сменить пароль
       </h2>
       <form
-        className="mt-[30px] flex flex-col gap-5"
+        className="mt-4 flex flex-col gap-4"
         onSubmit={handleSubmit(handleChangePassword)}
         onKeyDown={handleKeyDown}
       >
-        <div className="relative md:mb-[30px]">
-          <InputLabel id={"oldPassword"} label={"Введите старый пароль"} />
+        <div className="relative">
+          <div className="mb-2">
+            <InputLabel id={"oldPassword"} label={"Введите старый пароль"} />
+          </div>
           <InputField
             {...register("oldPassword")}
             onChange={() => clearErrors("oldPassword")}
             id={"oldPassword"}
             type={"password"}
             placeholder={"******"}
-            icon={lockIcon}
+            inputClassName="h-12 rounded-[8px] border border-grey-100 bg-white px-4 pr-[52px] font-primary text-400 font-normal text-grey-500 placeholder:text-grey-200 focus:border-grey-300"
+            passwordButtonClassName="right-4 top-1/2 -translate-y-1/2 md:top-1/2"
           />
           {errors.oldPassword && (
             <FormErrorMessage message={errors.oldPassword.message} />
           )}
         </div>
-        <div className="relative md:mb-[30px]">
-          <InputLabel id={"newPassword"} label={"Введите новый пароль"} />
+        <div className="relative">
+          <div className="mb-2">
+            <InputLabel id={"newPassword"} label={"Введите новый пароль"} />
+          </div>
           <InputField
             {...register("newPassword")}
             id={"newPassword"}
             type={"password"}
             placeholder={"******"}
-            icon={lockIcon}
             onChange={() => clearErrors("newPassword")}
+            inputClassName="h-12 rounded-[8px] border border-grey-100 bg-white px-4 pr-[52px] font-primary text-400 font-normal text-grey-500 placeholder:text-grey-200 focus:border-grey-300"
+            passwordButtonClassName="right-4 top-1/2 -translate-y-1/2 md:top-1/2"
           />
 
           {error && <FormErrorMessage message={error} />}
@@ -106,7 +111,6 @@ const ChangePassword: FC = () => {
         </div>
         <SubmitButton
           message={"Сохранить"}
-          // className="mb-0 sm:w-[124px] md:w-full"
         />
       </form>
     </div>

@@ -8,7 +8,6 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   id: string;
   name: string;
   label: string;
-  iconElement: ReactNode;
   error?: string;
   tooltip?: ReactNode;
 }
@@ -25,7 +24,6 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       onBlur,
       disabled,
       error,
-      iconElement,
       label,
       tooltip,
     },
@@ -48,19 +46,12 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           {tooltip}
         </div>
         <div className="relative">
-          <div
-            className={twMerge(
-              "pointer-events-none absolute left-4 top-2.5 fill-grey-300 text-grey-300",
-            )}
-          >
-            {iconElement}
-          </div>
           <input
             id={id}
             name={name}
             type={type === "password" && isPasswordVisible ? "text" : type}
             className={twMerge(
-              "h-11 w-full rounded-30 border border-grey-100 pl-[56px] font-primary text-400 font-light leading-[1.4] placeholder:text-grey-200 focus:border-blue-400 focus:outline-none",
+              "h-11 w-full rounded-30 border border-grey-100 pl-4 font-primary text-400 font-light leading-[1.4] placeholder:text-grey-200 focus:border-blue-400 focus:outline-none",
               type === "password" ? "pr-[56px]" : "pr-4",
               disabled && "bg-grey-50",
               error && "border-red-error focus:border-red-error",

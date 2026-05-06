@@ -23,7 +23,7 @@ import RedVelvetTemplate from "./features/Templates/RedVelvet/RedVelvetTemplate"
 import PageNotFound from "./features/PageNotFound/PageNotFound";
 import ScrollToTop from "./utils/ScrollToTop";
 import { NezhnostTemplate } from "./features/Templates/Nezhnost/NezhnostTemplate";
-import { Blog } from "./features/Blog/Blog";
+import { Blog, BlogArticle } from "./features/Blog";
 import { PinkVibeTemplate } from "./features/Templates/PinkVibe/PinkVibeTemplate";
 import { MinimalismTemplate } from "./features/Templates/Minimalism/MinimalismTemplate";
 import { PrivacyPolicy } from "./features/Legal/PrivacyPolicy";
@@ -85,6 +85,7 @@ const App = () => {
             <Route path={`/invitations/:id`} element={<Invitation />} />
 
             <Route path={`/blog`} element={<Blog />} />
+            <Route path={`/blog/:slug`} element={<BlogArticle />} />
 
             <Route path={"*"} element={<PageNotFound />} />
 

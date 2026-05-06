@@ -4,7 +4,6 @@ export const getInvitationDetails = async (invitationId, isPublished, client = p
     const invitation = await client.invitation.findFirst({
         where: { id: id, isPublished: isPublished },
         include: {
-            template: true,
             place: true,
             invitationColors: {
                 include: { color: true },
@@ -71,7 +70,7 @@ export const getInvitationDetails = async (invitationId, isPublished, client = p
         secondPartnerName: invitation.partner2Name,
         coupleImage: invitation.coupleImage,
         authorId: invitation.authorId,
-        templateName: invitation.template.name,
+        templateName: invitation.templateName,
         eventDate: eventDate,
         isPublished: invitation.isPublished,
         colors: formattedColors,

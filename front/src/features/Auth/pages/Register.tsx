@@ -9,8 +9,6 @@ import type { z } from "zod";
 import { registerUser } from "../../../api/service/UserService";
 import { EMAIL_TAKEN, SERVER_ERROR } from "../../../api/messages";
 import Input from "../../../components/Input";
-import { EmailIcon } from "../../../assets/svg/EmailIcon";
-import { Password } from "../../../assets/svg/auth/Password";
 import LinkToLoginOrRegister from "../components/LinkToLoginOrRegister";
 import { Link } from "react-router-dom";
 import { Tooltip } from "../../../components/Tooltip";
@@ -151,7 +149,6 @@ export const Register: FC<RegisterProps> = ({
                 onBlur={emailOnBlur}
                 ref={emailRef}
                 error={errors?.email?.message || errorMessage}
-                iconElement={<EmailIcon />}
               />
             </div>
             <div className="relative mb-8">
@@ -162,7 +159,6 @@ export const Register: FC<RegisterProps> = ({
                 type={"password"}
                 ref={passwordRef}
                 placeholder={"******"}
-                iconElement={<Password />}
                 onChange={(e) => {
                   setErrorMessage(undefined);
                   void passwordOnChange(e);

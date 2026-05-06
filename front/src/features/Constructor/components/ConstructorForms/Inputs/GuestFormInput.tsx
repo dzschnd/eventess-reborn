@@ -1,7 +1,6 @@
 import { useId } from "react";
 import type { ChangeEvent, FC } from "react";
 import TextInput from "./TextInput";
-import questionIcon from "../../../../../assetsOld/formIcons/question-circle.png";
 import trashIcon from "../../../../../assetsOld/buttonIcons/trash.png";
 import { QuestionType, type QuestionTypeValue } from "../../../../../types";
 import QuestionTypeSelect from "./QuestionTypeSelect";
@@ -88,7 +87,9 @@ const GuestFormInput: FC<GuestFormInputProps> = ({
           <TextInput
             placeholder={placeholder}
             label="Введите вопрос"
-            icon={questionIcon}
+            labelClassName="text-[12px] font-semibold"
+            inputContainerClassName="h-11 rounded-[44px]"
+            inputClassName="text-[14px]"
             value={safeValue.question}
             onChange={(e) => {
               const updatedValue: GuestFormQuestionValue = {

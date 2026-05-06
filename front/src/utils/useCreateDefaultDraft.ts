@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../api/redux/hooks";
+import { useAppDispatch, useAppSelector } from "../api/redux/hooks";
 import { createDraft } from "../api/service/DraftService";
 import { defaultTemplateName } from "../constants";
 import type { StateError } from "../types";
@@ -8,8 +8,14 @@ import { openAuthModal } from "./authModal";
 const useCreateDefaultDraft = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const isAuthorized = useAppSelector((state) => state.user.verified);
 
   return async () => {
+    if (!isAuthorized) {
+      openAuthModal();
+      return;
+    }
+
     const response = await dispatch(
       createDraft({ templateName: defaultTemplateName }),
     );

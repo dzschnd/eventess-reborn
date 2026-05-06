@@ -99,6 +99,7 @@ export const getUser = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axiosAuthorized.get(`${BASE_URL}/me`, {
+        suppressErrorToast: true,
         suppressErrorToastOn403: true,
         suppressGlobalLoading: true,
       });

@@ -5,7 +5,7 @@ type IphoneMockupProps = Record<string, never>;
 export const IphoneMockup: FC<IphoneMockupProps> = () => {
   return (
     <svg
-      className={"pointer-events-none z-50"}
+      className={"pointer-events-none relative z-50 h-full w-full"}
       width="823"
       height="1677"
       viewBox="0 0 823 1677"

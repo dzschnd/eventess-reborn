@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import RoundButton from "./components/RoundButton";
-import heroImage from "../../assets/images/home/heroImageDefault.avif";
+import heroImage from "../../assets/images/home/heroImageCustom.png";
 import { Link } from "react-router-dom";
 
 const Hero: FC = () => {

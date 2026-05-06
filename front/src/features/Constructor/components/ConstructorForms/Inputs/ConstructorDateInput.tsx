@@ -21,7 +21,6 @@ import { useEffect, useRef, useState, forwardRef } from "react";
 
 interface Props<T extends DateValue> {
   label: string;
-  icon?: string;
   description?: string;
   errorMessage?: string | ((validation: ValidationResult) => string);
   value?: T;
@@ -30,10 +29,7 @@ interface Props<T extends DateValue> {
 }
 
 const ConstructorDateInput = forwardRef<HTMLInputElement, Props<DateValue>>(
-  (
-    { label, icon, errorMessage, value, onChange, onBlur }: Props<DateValue>,
-    ref,
-  ) => {
+  ({ label, errorMessage, value, onChange, onBlur }: Props<DateValue>, ref) => {
     const [isMobile, setIsMobile] = useState(window.innerWidth < 760);
     const [isPopoverOpen, setIsPopoverOpen] = useState(false);
     const popoverRef = useRef<HTMLDivElement>(null);
@@ -61,8 +57,8 @@ const ConstructorDateInput = forwardRef<HTMLInputElement, Props<DateValue>>(
       };
     }, []);
 
-    const togglePopover = () => {
-      setIsPopoverOpen(!isPopoverOpen);
+    const openPopover = () => {
+      setIsPopoverOpen(true);
     };
 
     const handleDateChange = (newValue: DateValue | null) => {
@@ -81,23 +77,19 @@ const ConstructorDateInput = forwardRef<HTMLInputElement, Props<DateValue>>(
         onChange={handleDateChange}
         onBlur={onBlur}
       >
-        <Group className="flex h-[66px] items-center gap-4 rounded-[44px] border-[1px] border-grey-100 px-4 py-3">
-          <Button className="focus:outline-none" onPress={togglePopover}>
-            <img src={icon} alt="Pick a date" />
-          </Button>
-          <div className="flex flex-col gap-1">
-            <Label className="font-primary text-200 font-normal text-grey-400">
-              {label}
-            </Label>
-            <DateInput className="flex" ref={ref}>
-              {(segment) => (
-                <DateSegment
-                  segment={segment}
-                  className="font-primary text-400 font-light text-grey-500 placeholder:text-grey-200 focus:outline-none"
-                />
-              )}
-            </DateInput>
-          </div>
+        <Label className="sr-only">{label}</Label>
+        <Group
+          onClick={openPopover}
+          className="flex h-12 cursor-pointer items-center rounded-[50px] border border-grey-100 bg-white px-4 transition-colors duration-200 focus-within:border-grey-300"
+        >
+          <DateInput className="flex w-full" ref={ref}>
+            {(segment) => (
+              <DateSegment
+                segment={segment}
+                className="font-primary text-400 font-normal text-grey-500 placeholder:text-grey-200 focus:outline-none"
+              />
+            )}
+          </DateInput>
         </Group>
         <FieldError className={"text-300 text-red-500"}>
           {errorMessage}

@@ -33,12 +33,12 @@ const TemplateCard: FC<TemplateCardProps> = ({
   };
 
   return (
-    <div className="flex flex-col items-center px-3 sm:px-[14px] md:px-[22.5px]">
+    <div className="group flex flex-col items-center px-3 sm:px-[14px] md:px-[22.5px]">
       <img
         alt={`${name}Preview`}
         src={previewImage}
         className={
-          "mb-3 min-h-[254px] w-[158px] sm:min-h-[350px] sm:w-[171.03px] md:min-h-[400px] md:w-[195px]"
+          "mb-3 min-h-[254px] w-[158px] transition-transform duration-300 ease-out motion-reduce:transition-none sm:min-h-[350px] sm:w-[171.03px] md:min-h-[400px] md:w-[195px] md:group-hover:scale-[1.03]"
         }
       />
       <div

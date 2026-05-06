@@ -1,5 +1,6 @@
 import prisma from "../config/prisma.js";
-import { createDraftQuery, createColorQuery, createFormAnswerQuery, createFormQuestionQuery, createInvitationColorQuery, createPlaceQuery, createPlanItemQuery, createWishQuery, deleteFormAnswersQuery, deleteFormQuestionsQuery, deleteInvitationColorsQuery, deletePlanItemsQuery, deleteWishesQuery, getAllInvitationsQuery, getColorIdQuery, getFormQuestionByPositionQuery, getInvitationPlaceIdQuery, getTemplateIdQuery, updateInvitationPlaceIdQuery, updatePlaceQuery, publishInvitationQuery, deleteInvitation, getDraftQuery, } from "../queries/InvitationQueries.js";
+import { isSupportedTemplateName } from "../constants/templates.js";
+import { createDraftQuery, createColorQuery, createFormAnswerQuery, createFormQuestionQuery, createInvitationColorQuery, createPlaceQuery, createPlanItemQuery, createWishQuery, deleteFormAnswersQuery, deleteFormQuestionsQuery, deleteInvitationColorsQuery, deletePlanItemsQuery, deleteWishesQuery, getAllInvitationsQuery, getColorIdQuery, getFormQuestionByPositionQuery, getInvitationPlaceIdQuery, updateInvitationPlaceIdQuery, updatePlaceQuery, publishInvitationQuery, deleteInvitation, getDraftQuery, } from "../queries/InvitationQueries.js";
 import { deleteGuestAnswersByInvitationQuery } from "../queries/InvitationQueries.js";
 import { getInvitationDetails } from "../utils/InvitationUtils.js";
 import { errorResponse } from "../utils/errorUtils.js";
@@ -8,10 +9,9 @@ import { cleanupAllImages, cleanupOldImages, getParams, isR2Configured, r2, } fr
 export const createDraft = async (userId, templateName) => {
     try {
         return await prisma.$transaction(async (tx) => {
-            const template = await getTemplateIdQuery(templateName, tx);
-            if (template.length === 0)
+            if (!isSupportedTemplateName(templateName))
                 return errorResponse("Template not found");
-            const draft = await createDraftQuery(userId, template[0].id, tx);
+            const draft = await createDraftQuery(userId, templateName, tx);
             let defaultColors;
             switch (templateName) {
                 case "red_velvet":
@@ -141,11 +141,10 @@ export const updateDraft = async (draftId, data, userId) => {
                 updateData.eventDate = new Date(eventDate);
             }
             if (templateName) {
-                const template = await getTemplateIdQuery(templateName, tx);
-                if (template.length === 0) {
+                if (!isSupportedTemplateName(templateName)) {
                     return errorResponse("Template not found");
                 }
-                updateData.templateId = template[0].id;
+                updateData.templateName = templateName;
             }
             if (Object.keys(updateData).length > 0) {
                 await tx.invitation.update({

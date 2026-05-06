@@ -1,10 +1,9 @@
 import { useRef, useState } from "react";
 import type { FC } from "react";
-import logo from "../../../assetsOld/brand/logo.png";
-import logoHeart from "../../../assetsOld/brand/logoHeart.png";
 import cloudIcon from "../../../assetsOld/cloudIcon.png";
-import profile from "../../../assetsOld/navIcons/profile.png";
+import { CircleUserRound } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { Logo } from "../../../assets/svg/Logo";
 import PreviewToggle from "./ConstructorPreview/PreviewToggle";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../../api/redux/store";
@@ -102,49 +101,48 @@ const ConstructorHeader: FC<ConstructorHeaderProps> = ({
         onCancel={() => setShowPublishConfirm(false)}
       />
 
-      <div className="relative flex h-full max-h-[84px] items-center justify-center bg-white px-[16px] shadow-header sm:px-[30px] sm:py-[22px]">
-        <div className="absolute left-[16px] flex gap-[15px] sm:left-[30px]">
-          <Link to={"/"} className="sm:hidden">
-            <img src={logoHeart} alt="EVENTESS" className="h-[24px] w-[24px]" />
+      <div className="relative flex h-[62px] w-full shrink-0 items-center justify-center bg-white px-[16px] shadow-[0_8px_24px_rgba(33,33,33,0.08)] sm:px-[28px]">
+        <div className="absolute left-[16px] flex items-center gap-[18px] sm:left-[28px]">
+          <Link to={"/"} className="inline-flex">
+            <Logo width={76} desktopWidth={108} />
           </Link>
-          <Link to={"/"} className="hidden sm:block">
-            <img src={logo} alt="EVENTESS" className="h-[20px] w-[132px]" />
-          </Link>
-          <div className="relative">
-            <div className="absolute top-1/2 flex -translate-y-1/2 items-center gap-[5px]">
-              <img src={cloudIcon} alt="" className="h-[16px] w-[16px]" />
-              <span className="font-primary text-200 font-normal text-grey-400">
-                {error
-                  ? error.message
-                  : loading
-                    ? "Сохранение..."
-                    : "Сохранено"}
-              </span>
-            </div>
+          <div className="hidden items-center gap-[6px] sm:flex">
+            <img
+              src={cloudIcon}
+              alt=""
+              className="h-[14px] w-[14px] opacity-70"
+            />
+            <span className="font-primary text-200 font-normal leading-[1] text-grey-400">
+              {error
+                ? error.message
+                : loading
+                  ? "Сохранение..."
+                  : "Сохранено."}
+            </span>
           </div>
         </div>
         <div className="hidden md:block">
           <PreviewToggle isMobile={isMobile} setIsMobile={setIsMobile} />
         </div>
-        <div className="absolute right-[16px] flex items-center justify-end gap-[15px] sm:right-[30px]">
+        <div className="absolute right-[16px] flex items-center justify-end gap-3 sm:right-[28px]">
           <a
             href="/constructor/preview"
             className="hidden sm:block"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <button className="h-10 w-[155px] rounded-[30px] border-[2px] border-grey-300 bg-white font-primary text-400 font-normal text-grey-300">
+            <button className="h-9 rounded-42 border border-primary bg-white px-4 font-primary text-[13px] font-semibold leading-[1] text-primary shadow-[0_8px_18px_rgba(126,91,79,0.08)] transition duration-200 hover:-translate-y-[1px] hover:bg-primary hover:text-white hover:shadow-[0_12px_24px_rgba(126,91,79,0.14)] active:translate-y-0 active:shadow-[0_6px_14px_rgba(126,91,79,0.1)] sm:px-5">
               Предпросмотр
             </button>
           </a>
           <button
             onClick={onValidate}
-            className="h-10 w-[155px] rounded-[30px] bg-grey-300 font-primary text-400 font-normal text-white"
+            className="h-9 rounded-42 border border-primary bg-primary px-4 font-primary text-[13px] font-semibold leading-[1] text-white shadow-[0_10px_22px_rgba(126,91,79,0.18)] transition duration-200 hover:-translate-y-[1px] hover:border-primary-700 hover:bg-primary-700 hover:shadow-[0_14px_28px_rgba(126,91,79,0.22)] active:translate-y-0 active:shadow-[0_7px_16px_rgba(126,91,79,0.16)] sm:px-5"
           >
             Опубликовать
           </button>
-          <Link to={"/profile"}>
-            <img src={profile} alt="Profile" className="h-[24px] w-[24px]" />
+          <Link to={"/profile"} className="text-primary hover:text-primary-700">
+            <CircleUserRound size={22} strokeWidth={1.8} />
           </Link>
         </div>
       </div>

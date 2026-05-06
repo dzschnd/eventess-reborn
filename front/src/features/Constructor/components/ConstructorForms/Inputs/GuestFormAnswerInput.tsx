@@ -23,7 +23,7 @@ const GuestFormAnswerInput: FC<GuestFormAnswerInputProps> = ({
     <div className="flex flex-col gap-2">
       <label
         htmlFor={baseId}
-        className="font-primary text-200 font-normal text-grey-400"
+        className="font-primary text-[12px] font-semibold text-grey-400"
       >
         {`Вариант ответа ${index + 1}`}
       </label>
@@ -36,7 +36,7 @@ const GuestFormAnswerInput: FC<GuestFormAnswerInputProps> = ({
           autoComplete={"off"}
           id={baseId}
           type={"text"}
-          className="w-full rounded-[44px] border-[1px] border-grey-100 p-3 font-primary text-400 font-normal text-grey-500 placeholder:text-grey-200 focus:outline-none"
+          className="h-11 w-full rounded-[44px] border border-grey-100 px-4 font-primary text-[14px] font-normal text-grey-500 placeholder:text-grey-200 focus:outline-none"
           placeholder={"Введите ответ"}
           value={value ?? ""}
           onChange={onChange}

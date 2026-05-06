@@ -68,10 +68,10 @@ export const NezhnostInvitation: FC<TemplateProps> = ({
 
   return (
     <div
-      ref={parentRef}
       className={clsx(
+        "relative bg-white",
         isPreview &&
-          "scrollbar-hide absolute h-full w-full overflow-y-auto overflow-x-hidden border-[3px] border-black",
+          "absolute h-full w-full overflow-hidden border-[3px] border-black",
       )}
       style={{
         borderRadius: scale(40),
@@ -80,14 +80,21 @@ export const NezhnostInvitation: FC<TemplateProps> = ({
       }}
     >
       <img
-        className={
-          "fixed inset-0 -z-50 h-screen overflow-x-hidden object-cover opacity-15"
-        }
+        className={clsx(
+          "pointer-events-none inset-0 object-cover opacity-15",
+          isPreview
+            ? "absolute z-0 h-full w-full"
+            : "fixed -z-50 h-screen w-full overflow-x-hidden",
+        )}
         alt={""}
         src={background}
       />
       <div
-        className="flex h-full w-full flex-col items-center"
+        ref={parentRef}
+        className={clsx(
+          "relative z-10 flex h-full w-full flex-col items-center",
+          isPreview && "scrollbar-hide overflow-y-auto overflow-x-hidden",
+        )}
         style={{
           gap: isMobile ? scale(120) : scale(140),
           paddingInline: scale(15),

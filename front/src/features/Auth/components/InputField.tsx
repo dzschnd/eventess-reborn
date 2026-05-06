@@ -1,7 +1,6 @@
 import React, { forwardRef } from "react";
-import type { FC, ReactNode } from "react";
-import eyeIcon from "../../../assetsOld/formIcons/eye.png";
-import eyeClosedIcon from "../../../assetsOld/formIcons/eye-closed.png";
+import type { FC } from "react";
+import { Eye, EyeOff } from "lucide-react";
 import FormErrorMessage from "../../../components/FormErrorMessage";
 import { twMerge } from "tailwind-merge";
 
@@ -15,7 +14,8 @@ interface InputFieldProps {
   onBlur?: (e: React.FocusEvent) => void;
   disabled?: boolean;
   error?: string;
-  iconElement?: ReactNode;
+  inputClassName?: string;
+  passwordButtonClassName?: string;
 }
 
 const InputField: FC<InputFieldProps> = forwardRef<
@@ -27,13 +27,13 @@ const InputField: FC<InputFieldProps> = forwardRef<
       id,
       type,
       placeholder,
-      icon,
       value,
       onChange,
       onBlur,
       disabled,
       error,
-      iconElement,
+      inputClassName,
+      passwordButtonClassName,
       ...props
     },
     ref,
@@ -46,31 +46,13 @@ const InputField: FC<InputFieldProps> = forwardRef<
     return (
       <>
         <div className="relative">
-          {icon && (
-            <img
-              src={icon}
-              alt=""
-              className={twMerge(
-                "pointer-events-none absolute left-4 top-4 md:top-2.5",
-              )}
-            />
-          )}
-          {iconElement && (
-            <div
-              className={twMerge(
-                "pointer-events-none absolute left-4 top-4 fill-grey-300 text-grey-300 md:top-2.5",
-                error && "fill-red-error text-red-error",
-              )}
-            >
-              {iconElement}
-            </div>
-          )}
           <input
             id={id}
             type={type === "password" && isPasswordVisible ? "text" : type}
             className={twMerge(
-              "h-14 w-full rounded-[8px] border border-grey-100 px-4 pl-[56px] font-primary text-400 font-light leading-[1.4] placeholder:text-grey-200 focus:outline-none md:h-11",
+              "h-14 w-full rounded-[8px] border border-grey-100 px-4 font-primary text-400 font-light leading-[1.4] placeholder:text-grey-200 focus:outline-none md:h-11",
               error && "border-red-error",
+              inputClassName,
             )}
             placeholder={placeholder}
             ref={ref}
@@ -83,13 +65,27 @@ const InputField: FC<InputFieldProps> = forwardRef<
           {type === "password" && (
             <button
               type="button"
-              className="absolute right-4 top-4 md:top-2.5"
+              className={twMerge(
+                "absolute right-4 top-4 md:top-2.5",
+                passwordButtonClassName,
+              )}
               onClick={togglePasswordVisibility}
             >
-              <img
-                src={isPasswordVisible ? eyeIcon : eyeClosedIcon}
-                alt={isPasswordVisible ? "Hide password" : "Show password"}
-              />
+              {isPasswordVisible ? (
+                <EyeOff
+                  size={20}
+                  strokeWidth={1.7}
+                  aria-label="Hide password"
+                  className="text-grey-300"
+                />
+              ) : (
+                <Eye
+                  size={20}
+                  strokeWidth={1.7}
+                  aria-label="Show password"
+                  className="text-grey-300"
+                />
+              )}
             </button>
           )}
         </div>

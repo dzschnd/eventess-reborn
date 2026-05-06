@@ -1,87 +1,74 @@
 import type { FC } from "react";
-import Header from "../../../components/Header";
-import ProfileNavigation from "../components/ProfileNavigation";
-import Footer from "../../../components/Footer";
 import InvitationCard from "../components/Invitations/InvitationCard";
 import { Link, useNavigate } from "react-router-dom";
 import goBackIcon from "../../../assetsOld/buttonIcons/arrowLeft.png";
 import type { InvitationDetailsResponse } from "../../../shared/types";
 import InivitationCardSkeleton from "../components/Invitations/InivitationCardSkeleton";
 import { useInvitations } from "../../../hooks/useInvitations";
+import DashboardEmptyState from "../components/DashboardEmptyState";
+import ProfileDashboardLayout from "../layouts/ProfileDashboardLayout";
 
 const MyInvitationsPage: FC = () => {
   const { invitations, loading } = useInvitations();
   const navigate = useNavigate();
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <div className="flex flex-grow flex-col items-center justify-between">
-        <Header />
-        <div className="max-w-[100vw] justify-center px-4 pb-[160px] pt-[60px] sm:flex sm:gap-[64px] md:w-full md:gap-[117px] md:px-[60px] md:pb-[120px] md:pt-[120px]">
-          <ProfileNavigation />
-          <div className="w-[335px] flex-grow sm:w-full sm:max-w-[467px] md:max-w-[862px]">
-            <button className="md:hidden">
-              <Link to="/profile">
-                <div className="flex items-center gap-[5px]">
-                  <img src={goBackIcon} alt="Go Back" className="h-6 w-6" />
-                  <h1 className="font-primary text-800 font-normal leading-[1.2] text-grey-500">
-                    Мои приглашения
-                  </h1>
-                </div>
-              </Link>
-            </button>
-            <h1 className="hidden font-primary text-900 font-semibold leading-[1.21] text-grey-500 md:inline">
+    <ProfileDashboardLayout>
+      <button className="md:hidden">
+        <Link to="/profile">
+          <div className="flex items-center gap-[5px]">
+            <img src={goBackIcon} alt="Go Back" className="h-6 w-6" />
+            <h1 className="font-primary text-800 font-normal leading-[1.2] text-grey-500">
               Мои приглашения
             </h1>
-            <div className="mt-10 flex w-full flex-col items-center gap-5 sm:grid sm:grid-cols-2 sm:gap-x-[25px] sm:gap-y-5 md:grid-cols-3 md:gap-x-[30px] md:gap-y-[60px]">
-              {loading ? (
-                <>
-                  <InivitationCardSkeleton />
-                  <InivitationCardSkeleton />
-                  <InivitationCardSkeleton />
-                </>
-              ) : invitations &&
-                Array.isArray(invitations) &&
-                invitations.length > 0 ? (
-                invitations.map((invitation: InvitationDetailsResponse) => (
-                  <InvitationCard
-                    key={invitation.id}
-                    id={invitation.id}
-                    coupleImage={invitation.coupleImage}
-                    templateName={invitation.templateName}
-                    firstPartnerName={
-                      invitation.firstPartnerName
-                        ? invitation.firstPartnerName
-                        : "Невеста"
-                    }
-                    secondPartnerName={
-                      invitation.secondPartnerName
-                        ? invitation.secondPartnerName
-                        : "Жених"
-                    }
-                  />
-                ))
-              ) : (
-                <div className="flex w-full flex-col rounded-[20px] bg-grey-50 p-5">
-                  <span className="font-grey-500 mb-5 text-300 font-medium">
-                    У вас еще нет ни одного приглашения
-                  </span>
-                  <button
-                    onClick={() => navigate("/catalog")}
-                    className="h-[42px] rounded-[30px] bg-grey-300 px-[18px] font-semibold text-white"
-                  >
-                    Создать
-                  </button>
-                </div>
-              )}
-            </div>
           </div>
-        </div>
-        <div className="w-full">
-          <Footer />
-        </div>
+        </Link>
+      </button>
+      <h1 className="hidden font-primary text-[24px] font-semibold leading-[1.21] text-grey-500 md:inline">
+        Мои приглашения
+      </h1>
+      <div className="mt-10 flex w-full flex-col items-center gap-5 sm:grid sm:grid-cols-2 sm:gap-x-[25px] sm:gap-y-5 md:grid-cols-3 md:gap-x-[30px] md:gap-y-[60px]">
+        {loading ? (
+          <>
+            <InivitationCardSkeleton />
+            <InivitationCardSkeleton />
+            <InivitationCardSkeleton />
+          </>
+        ) : invitations &&
+          Array.isArray(invitations) &&
+          invitations.length > 0 ? (
+          invitations.map((invitation: InvitationDetailsResponse) => (
+            <InvitationCard
+              key={invitation.id}
+              id={invitation.id}
+              coupleImage={invitation.coupleImage}
+              templateName={invitation.templateName}
+              firstPartnerName={
+                invitation.firstPartnerName
+                  ? invitation.firstPartnerName
+                  : "Невеста"
+              }
+              secondPartnerName={
+                invitation.secondPartnerName
+                  ? invitation.secondPartnerName
+                  : "Жених"
+              }
+            />
+          ))
+        ) : (
+          <div className="w-full sm:col-span-2 md:col-span-3">
+            <DashboardEmptyState
+              title="У вас пока нет приглашений"
+              description="Создайте первое приглашение и начните оформлять событие."
+              buttonLabel="Создать приглашение"
+              onButtonClick={() => navigate("/catalog")}
+              showButtonIcon={false}
+              icon="invitation"
+            />
+          </div>
+        )}
       </div>
-    </div>
+    </ProfileDashboardLayout>
   );
 };
 

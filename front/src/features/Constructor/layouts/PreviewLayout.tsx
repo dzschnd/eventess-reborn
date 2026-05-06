@@ -21,33 +21,51 @@ const PreviewLayout: FC<PreviewLayoutProps> = ({
 }) => {
   if (!calculatedWidth) return null;
 
+  const mobilePhoneWidth =
+    calculatedWidth && calculatedHeight
+      ? Math.min(
+          Math.max(
+            Math.min(calculatedWidth, calculatedHeight * (823 / 1677)),
+            320,
+          ),
+          390,
+        )
+      : 375;
+  const mobilePhoneHeight = mobilePhoneWidth * (1677 / 823);
+  const mobileScreenWidth = mobilePhoneWidth * (746 / 823);
+  const mobileScreenHeight = mobilePhoneHeight * (1619 / 1677);
+
   return (
     <div className={"flex h-full w-full items-center justify-center"}>
       {isMobile ? (
         <div
           className={
-            "relative flex items-center justify-center overflow-y-hidden"
+            "relative flex-shrink-0 overflow-hidden rounded-[40px] bg-white"
           }
           style={{
-            maxHeight: `${calculatedWidth && calculatedHeight ? Math.min(calculatedWidth * (1677 / 823), calculatedHeight) + "px" : "1677px"}`,
-            maxWidth: `${calculatedWidth && calculatedHeight ? Math.min(calculatedWidth, calculatedHeight * (823 / 1677)) + "px" : "823px"}`,
+            width: `${mobilePhoneWidth}px`,
+            height: `${mobilePhoneHeight}px`,
+            minWidth: "320px",
           }}
         >
+          <div
+            className="absolute overflow-hidden bg-white"
+            style={{
+              top: `${(32 / 1677) * 100}%`,
+              left: `${(38 / 823) * 100}%`,
+              width: `${(746 / 823) * 100}%`,
+              height: `${(1619 / 1677) * 100}%`,
+              borderRadius: `${(40 / 746) * 100}%`,
+            }}
+          >
+            <InvitationPreview
+              block={block}
+              width={mobileScreenWidth}
+              height={mobileScreenHeight}
+              isMobile={isMobile}
+            />
+          </div>
           <IphoneMockup />
-          <InvitationPreview
-            block={block}
-            width={calculatePreviewWidth(
-              calculatedWidth,
-              calculatedHeight,
-              isMobile,
-            )}
-            height={calculatePreviewHeight(
-              calculatedWidth,
-              calculatedHeight,
-              isMobile,
-            )}
-            isMobile={isMobile}
-          />
         </div>
       ) : (
         <>

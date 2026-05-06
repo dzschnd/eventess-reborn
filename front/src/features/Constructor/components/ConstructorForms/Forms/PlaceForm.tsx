@@ -3,8 +3,6 @@ import type { FC } from "react";
 import FormLayout from "../../../layouts/FormLayout";
 import TextInput from "../Inputs/TextInput";
 import ImageSelector from "../Inputs/ImageSelector";
-import locationIcon from "../../../../../assetsOld/formIcons/location.png";
-import linkIcon from "../../../../../assetsOld/formIcons/link.png";
 import { useAppDispatch, useAppSelector } from "../../../../../api/redux/hooks";
 import { Controller, useForm } from "react-hook-form";
 import { updateLocalDraft } from "../../../../../api/redux/slices/draftSlice";
@@ -118,8 +116,8 @@ const PlaceForm: FC = () => {
           <TextInput
             {...field}
             placeholder={"Введите адрес места"}
-            icon={locationIcon}
             label={"Местоположение"}
+            labelClassName="font-semibold"
             onChange={(e) => {
               field.onChange(e);
               handleUpdateLocalDraft();
@@ -139,8 +137,8 @@ const PlaceForm: FC = () => {
           <TextInput
             {...field}
             placeholder={"https://yandex.ru/maps/..."}
-            icon={linkIcon}
             label={"Добавьте ссылку на Yandex или Google карты"}
+            labelClassName="font-semibold"
             onChange={(e) => {
               field.onChange(e);
               handleUpdateLocalDraft();

@@ -1,6 +1,5 @@
 import React, { useId } from "react";
 import type { FC } from "react";
-import imageIcon from "../../../../../assetsOld/formIcons/image.png";
 import refreshIcon from "../../../../../assetsOld/buttonIcons/refresh.svg";
 
 const ImageSelector: FC<{
@@ -24,9 +23,9 @@ const ImageSelector: FC<{
   };
 
   return (
-    <div className="flex flex-col gap-3 text-left">
+    <div className="flex flex-col gap-2 text-left">
       <div className={"flex items-center justify-between"}>
-        <span className="font-primary text-200 font-normal text-grey-400">
+        <span className="font-primary text-200 font-semibold leading-[1.2] text-grey-400">
           Фото
         </span>
         <button disabled={!imageUrl} onClick={onImageReset}>
@@ -37,7 +36,7 @@ const ImageSelector: FC<{
           />
         </button>
       </div>
-      <span className="font-primary text-200 font-normal text-grey-300">
+      <span className="font-primary text-200 font-normal leading-[1.2] text-grey-300">
         Кликните, чтобы добавить ваше фото
       </span>
       <div className="flex gap-2">
@@ -52,8 +51,7 @@ const ImageSelector: FC<{
           alt="Selected"
         />
         <label htmlFor={id}>
-          <div className="flex h-[116px] w-[116px] cursor-pointer flex-col items-center justify-center gap-[7px] rounded-[10px] border-[1px] border-grey-100">
-            <img src={imageIcon} alt="" className="h-6 w-6" />
+          <div className="flex h-[116px] w-[116px] cursor-pointer flex-col items-center justify-center rounded-[10px] border border-grey-100 px-3 text-center transition-colors duration-200 hover:border-grey-300">
             <span className="font-primary text-200 font-normal text-grey-400">
               Заменить фото
             </span>

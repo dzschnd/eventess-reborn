@@ -2,7 +2,6 @@ import { useState } from "react";
 import type { FC } from "react";
 import FormLayout from "../../../layouts/FormLayout";
 import WishInput from "../Inputs/WishInput";
-import plusIcon from "../../../../../assetsOld/buttonIcons/plus.png";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../../../../api/redux/store";
@@ -130,16 +129,10 @@ const WishesForm: FC = () => {
 
       <button
         type="button"
-        className="self-center"
+        className="h-[42px] self-center rounded-[42px] border border-primary px-8 font-primary text-[14px] font-semibold leading-[1] text-primary transition-colors duration-200 hover:bg-primary hover:text-white"
         onClick={() => append({ wish: "", position: fields.length })}
       >
-        <div className="mb-1 flex items-center gap-1">
-          <span className="font-primary text-300 font-normal text-grey-400">
-            Добавить пожелание
-          </span>
-          <img src={plusIcon} alt="Add" className="h-[15px] w-[15px]" />
-        </div>
-        <div className="h-[1px] w-full bg-grey-400" />
+        Добавить пожелание +
       </button>
     </FormLayout>
   );

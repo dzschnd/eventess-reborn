@@ -9,9 +9,7 @@ import type { z } from "zod";
 import { loginUser } from "../../../api/service/UserService";
 import { setEmail } from "../../../api/redux/slices/userSlice";
 import { INVALID_CREDENTIALS, SERVER_ERROR } from "../../../api/messages";
-import { EmailIcon } from "../../../assets/svg/EmailIcon";
 import Input from "../../../components/Input";
-import { Password } from "../../../assets/svg/auth/Password";
 import LinkToLoginOrRegister from "../components/LinkToLoginOrRegister";
 import SubmitButton from "../components/SubmitButton";
 import { loginSchema } from "../../../shared/schemas/auth";
@@ -118,7 +116,6 @@ export const Login: FC<LoginProps> = ({
             onBlur={emailOnBlur}
             ref={emailRef}
             error={errors?.email?.message}
-            iconElement={<EmailIcon />}
           />
         </div>
         <div className="relative mb-[11.5px] flex flex-col gap-[5px]">
@@ -129,7 +126,6 @@ export const Login: FC<LoginProps> = ({
             type={"password"}
             ref={passwordRef}
             placeholder={"******"}
-            iconElement={<Password />}
             onChange={(e) => {
               setErrorMessage(undefined);
               void passwordOnChange(e);

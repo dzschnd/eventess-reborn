@@ -1,10 +1,11 @@
 import type { FC } from "react";
-import deleteIcon from "../../../../assetsOld/buttonIcons/deleteIcon.png";
 import { useNavigate } from "react-router-dom";
 import type { AppDispatch } from "../../../../api/redux/store";
 import { useDispatch } from "react-redux";
-import { getDraft } from "../../../../api/service/DraftService";
+import { getDraft, publishDraft } from "../../../../api/service/DraftService";
 import redVelvetDefaultImage from "../../../../assetsOld/templates/redVelvet/namesImage.png";
+import { ExternalLink, Trash2 } from "lucide-react";
+import { templates } from "../../../../constants";
 
 interface DraftCardProps {
   id: number;
@@ -25,10 +26,21 @@ const DraftCard: FC<DraftCardProps> = ({
 }) => {
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
+  const templateInfo = templates.find(
+    (template) => template.name === templateName,
+  );
+
   const handleEdit = async () => {
     const response = await dispatch(getDraft({ id: id }));
     if (response.meta.requestStatus === "fulfilled")
       navigate("/constructor/names");
+  };
+
+  const handlePublish = async () => {
+    const response = await dispatch(publishDraft({ id }));
+    if (response.meta.requestStatus === "fulfilled") {
+      navigate(`/invitations/${id}`);
+    }
   };
 
   const backgroundImageUrl = coupleImage
@@ -36,30 +48,69 @@ const DraftCard: FC<DraftCardProps> = ({
       coupleImage.split(".com")[1]
     : templateName === "red_velvet"
       ? redVelvetDefaultImage
-      : redVelvetDefaultImage;
+      : (templateInfo?.previewImage ?? redVelvetDefaultImage);
 
   return (
-    <div className="relative flex h-[428px] w-[267px] flex-col gap-[20px] rounded-[20px] bg-grey-50 bg-cover bg-no-repeat pb-[20px] pt-[43px] sm:h-[381px] sm:w-[222px] md:h-[606px] md:w-[273px] md:bg-[transparent] md:pt-0">
-      <div
-        className="relative mx-[27px] h-[428px] rounded-[20px] bg-cover bg-center bg-no-repeat sm:mx-[23.5px] md:mx-[23px]"
-        style={{
-          backgroundImage: `url(${backgroundImageUrl})`,
-        }}
-      ></div>
-      <span className="text-center font-primary text-400 font-light">
-        {firstPartnerName && secondPartnerName
-          ? `${firstPartnerName} и ${secondPartnerName}`
-          : ""}
-      </span>
-      <div className="flex justify-center gap-[18px] px-[27px] sm:gap-[7px] sm:px-[12px] md:gap-6 md:px-[23px]">
+    <div className="flex w-full max-w-[267px] flex-col">
+      <div className="relative aspect-square w-full overflow-hidden rounded-[24px] bg-grey-50">
+        <img
+          src={backgroundImageUrl}
+          alt={
+            firstPartnerName && secondPartnerName
+              ? `${firstPartnerName} и ${secondPartnerName}`
+              : (templateInfo?.displayedName ?? "Черновик приглашения")
+          }
+          className="h-full w-full object-cover"
+        />
+        <div className="absolute right-4 top-4 flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => {
+              void handleEdit();
+            }}
+            aria-label="Открыть черновик"
+            className="flex h-8 w-8 items-center justify-center rounded-full bg-black/25 text-white transition-colors duration-200 hover:bg-black/40"
+          >
+            <ExternalLink size={22} strokeWidth={2.1} />
+          </button>
+          <button
+            type="button"
+            onClick={handleDelete}
+            aria-label="Удалить черновик"
+            className="flex h-8 w-8 items-center justify-center rounded-full bg-black/25 text-white transition-colors duration-200 hover:bg-black/40"
+          >
+            <Trash2 size={23} strokeWidth={2.1} />
+          </button>
+        </div>
+      </div>
+
+      <div className="mt-5 flex items-center justify-between gap-4 px-1">
+        <span className="min-w-0 truncate font-primary text-[22px] font-normal leading-[1.2] text-grey-500">
+          {templateInfo?.displayedName ?? templateName}
+        </span>
+        <span className="shrink-0 font-primary text-[22px] font-bold leading-[1.2] text-grey-500">
+          {(templateInfo?.price ?? 3500).toLocaleString("ru")}₽
+        </span>
+      </div>
+
+      <div className="mt-5 flex items-center gap-2 px-1">
         <button
-          onClick={handleEdit}
-          className="rounded-[42px] bg-grey-300 px-4 py-3 font-primary text-400 font-normal leading-[1.5] text-white md:max-w-[223px]"
+          type="button"
+          onClick={() => {
+            void handleEdit();
+          }}
+          className="h-[42px] flex-1 rounded-[42px] border border-primary bg-white px-3 font-primary text-[17px] font-normal leading-[1] text-primary transition-colors duration-200 hover:bg-primary hover:text-white"
         >
           Редактировать
         </button>
-        <button onClick={handleDelete}>
-          <img src={deleteIcon} alt="Delete" className="h-11 min-w-11" />
+        <button
+          type="button"
+          onClick={() => {
+            void handlePublish();
+          }}
+          className="h-[42px] flex-1 rounded-[42px] border border-primary bg-primary px-3 font-primary text-[17px] font-normal leading-[1] text-white transition-colors duration-200 hover:border-primary-700 hover:bg-primary-700"
+        >
+          Опубликовать
         </button>
       </div>
     </div>

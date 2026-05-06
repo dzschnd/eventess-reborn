@@ -10,7 +10,6 @@ import { resetPassword } from "../../../api/service/UserService";
 import { SERVER_ERROR } from "../../../api/messages";
 import Input from "../../../components/Input";
 import SubmitButton from "../components/SubmitButton";
-import { Password } from "../../../assets/svg/auth/Password";
 import { Tooltip } from "../../../components/Tooltip";
 import useIsMobile from "../../../hooks/useIsMobile";
 import { resetPasswordSchema } from "../../../shared/schemas/auth";
@@ -88,7 +87,6 @@ export const PasswordReset: FC<PasswordResetProps> = ({ setCurrentPage }) => {
             type={"password"}
             ref={passwordRef}
             placeholder={"******"}
-            iconElement={<Password />}
             onChange={(e) => {
               setErrorMessage(undefined);
               void passwordOnChange(e);

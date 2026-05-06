@@ -10,10 +10,7 @@ import {
   SelectValue,
 } from "react-aria-components";
 import type { Key } from "react-aria-components";
-import checkboxIcon from "../../../../../assetsOld/formIcons/check-square.png";
 import arrowRightIcon from "../../../../../assetsOld/buttonIcons/arrowRight.png";
-import radioIcon from "../../../../../assetsOld/formIcons/radio-circle.png";
-import textIcon from "../../../../../assetsOld/formIcons/text-input.png";
 import { QuestionType, type QuestionTypeValue } from "../../../../../types";
 
 interface QuestionTypeSelectProps {
@@ -45,24 +42,13 @@ const QuestionTypeSelect: FC<QuestionTypeSelectProps> = ({
       <Button
         ref={triggerRef}
         onPress={() => setIsPopoverOpen(true)}
-        className="flex h-[66px] w-full items-center gap-3 rounded-[44px] border-[1px] border-grey-100 px-4 py-3 focus:outline-none"
+        className="flex h-11 w-full items-center rounded-[44px] border border-grey-100 px-4 focus:outline-none"
       >
-        <img
-          src={
-            value === QuestionType.CHECKBOX
-              ? checkboxIcon
-              : value === QuestionType.SELECT
-                ? radioIcon
-                : textIcon
-          }
-          alt=""
-          className="h-6 w-6"
-        />
-        <div className="relative flex w-full flex-col gap-1 focus:outline-none">
-          <Label className="self-start font-primary text-200 font-normal text-grey-400">
+        <div className="relative flex w-full items-center gap-4 focus:outline-none">
+          <Label className="shrink-0 font-primary text-[12px] font-semibold text-grey-400">
             Тип вопроса
           </Label>
-          <SelectValue className="flex font-primary text-400 font-normal text-grey-500">
+          <SelectValue className="flex font-primary text-[14px] font-normal text-grey-500">
             {value === QuestionType.CHECKBOX && "Несколько из списка"}
             {value === QuestionType.SELECT && "Один из списка"}
             {value === QuestionType.TEXT && "Текст"}
@@ -70,7 +56,7 @@ const QuestionTypeSelect: FC<QuestionTypeSelectProps> = ({
           <img
             src={arrowRightIcon}
             alt="Dropdown"
-            className="absolute right-0 top-1/2"
+            className="absolute right-0 top-1/2 h-4 w-4"
             style={{
               transform: `translateY(-50%) rotate(${isPopoverOpen ? `0` : `90deg`}`,
             }}
@@ -86,23 +72,20 @@ const QuestionTypeSelect: FC<QuestionTypeSelectProps> = ({
         <ListBox className="flex flex-col rounded-[20px] border-[1px] border-grey-100 bg-white font-primary text-400 font-normal text-grey-500 focus:outline-none">
           <ListBoxItem
             textValue={"Несколько из списка"}
-            className="flex cursor-pointer gap-3 px-5 pb-2 pt-5 focus:outline-none"
+            className="flex cursor-pointer px-5 pb-2 pt-5 focus:outline-none"
           >
-            <img src={checkboxIcon} alt="" className="h-6 w-6" />
             Несколько из списка
           </ListBoxItem>
           <ListBoxItem
             textValue={"Один из списка"}
-            className="flex cursor-pointer gap-3 px-5 py-2 focus:outline-none"
+            className="flex cursor-pointer px-5 py-2 focus:outline-none"
           >
-            <img src={radioIcon} alt="" className="h-6 w-6" />
             Один из списка
           </ListBoxItem>
           <ListBoxItem
             textValue={"Текст"}
-            className="flex cursor-pointer gap-3 px-5 pb-5 pt-2 focus:outline-none"
+            className="flex cursor-pointer px-5 pb-5 pt-2 focus:outline-none"
           >
-            <img src={textIcon} alt="" className="h-6 w-6" />
             Текст
           </ListBoxItem>
         </ListBox>

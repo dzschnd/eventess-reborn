@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { Dispatch, FC, ReactNode, SetStateAction } from "react";
 import clsx from "clsx";
 import { MobileClose } from "../../../assets/svg/auth/MobileClose";
@@ -42,11 +42,42 @@ export const AuthLayout: FC<AuthLayoutProps> = ({
   setForgotPasswordInputValues,
 }) => {
   const overlayRef = useRef<HTMLDivElement>(null);
+  const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [isClosing, setIsClosing] = useState<boolean>(false);
   const [, setIsWidePopup] = useState<boolean>(false);
+
+  const closeAuth = useCallback(() => {
+    if (isClosing) return;
+
+    setIsClosing(true);
+    closeTimeoutRef.current = setTimeout(() => {
+      setIsAuthOpen(false);
+    }, 340);
+  }, [isClosing, setIsAuthOpen]);
+
+  const setAuthOpenWithAnimation: Dispatch<SetStateAction<boolean>> =
+    useCallback(
+      (value) => {
+        const shouldOpen = typeof value === "function" ? value(true) : value;
+        if (shouldOpen) {
+          setIsAuthOpen(true);
+          return;
+        }
+
+        closeAuth();
+      },
+      [closeAuth, setIsAuthOpen],
+    );
 
   useEffect(() => {
     overlayRef.current?.focus({ preventScroll: true });
   }, [currentPage]);
+
+  useEffect(() => {
+    return () => {
+      if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
+    };
+  }, []);
 
   const renderPage = (): ReactNode => {
     switch (currentPage) {
@@ -54,7 +85,7 @@ export const AuthLayout: FC<AuthLayoutProps> = ({
         return (
           <Login
             setCurrentPage={setCurrentPage}
-            setIsAuthOpen={setIsAuthOpen}
+            setIsAuthOpen={setAuthOpenWithAnimation}
             inputValues={loginInputValues}
             setInputValues={setLoginInputValues}
           />
@@ -93,7 +124,7 @@ export const AuthLayout: FC<AuthLayoutProps> = ({
 
   useCloseOnClickOutside({
     popupRef: overlayRef,
-    setIsPopupOpenAction: setIsAuthOpen,
+    setIsPopupOpenAction: setAuthOpenWithAnimation,
   });
 
   return (
@@ -114,24 +145,22 @@ export const AuthLayout: FC<AuthLayoutProps> = ({
           "px-[16px] py-[30px] sm:px-[30px] md:px-[122px]",
           "md:flex md:items-center md:justify-center",
           "rounded-t-20 sm:rounded-b-20 md:rounded-none",
+          "auth-popup-panel",
+          isClosing && "auth-popup-panel-closing",
         )}
       >
         {renderPage()}
         <button
           aria-label={"Close popup"}
           className={"absolute right-4 top-[-34px] sm:hidden"}
-          onClick={() => {
-            setIsAuthOpen(false);
-          }}
+          onClick={closeAuth}
         >
           <MobileClose />
         </button>
         <button
           aria-label={"Close popup"}
           className={"absolute right-[30px] top-[30px] hidden sm:block"}
-          onClick={() => {
-            setIsAuthOpen(false);
-          }}
+          onClick={closeAuth}
         >
           <Close />
         </button>

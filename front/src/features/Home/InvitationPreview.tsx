@@ -121,17 +121,14 @@ const Features: FC = () => {
           </div>
         </Carousel>
 
-        <div
-          className={
-            "hidden flex-wrap justify-center gap-4 sm:flex md:gap-x-[30px]"
-          }
-        >
+        <div className={"hidden flex-wrap justify-center gap-x-4 gap-y-5 sm:flex md:gap-x-5"}>
           {blocks.map((block, index) => (
             <TabButton
+              key={block.name}
               className={clsx(
                 index <= 3
-                  ? "min-w-[98px] md:min-w-[118.5px]"
-                  : "min-w-[118.5px]",
+                  ? "min-w-[138px] md:min-w-[150px]"
+                  : "min-w-[150px] md:min-w-[164px]",
               )}
               isSelected={index === currentBlock}
               message={block.name}

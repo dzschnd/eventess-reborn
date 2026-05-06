@@ -2,8 +2,6 @@ import { useState } from "react";
 import type { FC, PropsWithChildren } from "react";
 import DisableBlockToggle from "../components/DisableBlockToggle";
 import hamburgerMenu from "../../../assetsOld/hamburger-menu.png";
-import arrowLeft from "../../../assetsOld/buttonIcons/arrowLeft.png";
-import arrowRight from "../../../assetsOld/buttonIcons/arrowRight.png";
 import { Link } from "react-router-dom";
 import { constructorPages } from "./ConstructorLayout";
 import FormMenu from "../components/ConstructorForms/FormMenu";
@@ -27,15 +25,18 @@ const FormLayout: FC<FormLayoutProps> = ({
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const dispatch: AppDispatch = useDispatch();
 
-  return isMenuOpen ? (
-    <FormMenu pageIndex={pageIndex} setIsMenuOpen={setIsMenuOpen} />
-  ) : (
+  return (
     <div className="relative flex min-h-full w-full max-w-full flex-col items-center justify-between bg-white sm:max-w-[423px] sm:shadow-form">
+      {isMenuOpen && (
+        <div className="absolute inset-0 z-30 bg-white">
+          <FormMenu pageIndex={pageIndex} setIsMenuOpen={setIsMenuOpen} />
+        </div>
+      )}
       <div className="relative w-full flex-grow overflow-y-auto overflow-x-hidden sm:w-[423px] sm:min-w-[423px] sm:shadow-form">
-        <div className="absolute inset-0 flex min-h-full w-full justify-center pl-[16px] pr-[16px] pt-[20px] sm:w-[423px] sm:min-w-[423px] sm:pl-[30px] sm:pr-[30px] sm:pt-[40px]">
-          <div className="w-[328px] sm:w-[363px]">
-            <div className="mb-[40px] flex justify-between">
-              <h1 className="font-primary text-600 font-semibold text-grey-400">
+        <div className="absolute inset-0 flex min-h-full w-full justify-center px-4 pt-6 sm:w-[423px] sm:min-w-[423px] sm:px-[30px] sm:pt-[38px]">
+          <div className="w-full max-w-[363px]">
+            <div className="mb-[40px] flex items-center justify-between">
+              <h1 className="font-primary text-600 font-semibold leading-[1.2] text-grey-400">
                 {constructorPages[pageIndex].name}
               </h1>
               <div className="flex items-center gap-3">
@@ -52,7 +53,7 @@ const FormLayout: FC<FormLayoutProps> = ({
                   <img
                     src={hamburgerMenu}
                     alt="Open Menu"
-                    className="h-[24px] w-[24px]"
+                    className="h-5 w-5"
                   />
                 </button>
               </div>
@@ -61,17 +62,18 @@ const FormLayout: FC<FormLayoutProps> = ({
               {isBlockDisabled && (
                 <div className="absolute bottom-0 left-0 right-0 top-[90px] z-10 bg-grey-50 bg-opacity-50"></div>
               )}
-              <p className="mb-[30px] font-primary text-300 font-normal text-grey-500">
+              <p className="mb-[30px] font-primary text-300 font-normal leading-[1.22] text-grey-400">
                 {description}
               </p>
-              <div className="flex flex-col gap-5 pb-5">{children}</div>
+              <div className="flex flex-col gap-[22px] pb-5">{children}</div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="flex w-full justify-center gap-2.5 px-[30px] py-[24px] shadow-form-footer sm:max-w-[423px]">
+      <div className="sticky bottom-0 z-20 flex w-full justify-center gap-3 bg-white px-4 py-[14px] shadow-[0_-8px_24px_rgba(33,33,33,0.08)] sm:max-w-[423px] sm:gap-2.5 sm:px-[30px]">
         <Link
+          className="flex-1 sm:flex-none"
           to={
             pageIndex > 0
               ? constructorPages[pageIndex - 1].link
@@ -80,33 +82,13 @@ const FormLayout: FC<FormLayoutProps> = ({
         >
           <button
             onClick={() => dispatch}
-            className="hidden h-[35px] w-[176.5px] rounded-[30px] border-[2px] border-grey-300 bg-white font-primary text-400 font-normal text-grey-300 sm:block"
+            className="h-[46px] w-full rounded-42 border-2 border-primary bg-white font-primary text-300 font-semibold text-primary transition-colors duration-200 hover:bg-primary hover:text-white sm:h-[36px] sm:w-[176.5px]"
           >
             Назад
           </button>
-          <button className="h-[40px] w-[40px] rounded-full bg-grey-50 p-2 sm:hidden">
-            <img
-              src={arrowLeft}
-              alt="Previous Page"
-              className="h-[24px] w-[24px]"
-            />
-          </button>
-        </Link>
-        <Link to={"/constructor/preview"} className="sm:hidden">
-          <button
-            onClick={() =>
-              dispatch(
-                setLastViewedConstructorBlock(
-                  constructorPages[pageIndex].link.replace("/constructor/", ""),
-                ),
-              )
-            }
-            className="h-[40px] w-[220px] rounded-[30px] bg-grey-300 font-primary text-400 font-normal text-white"
-          >
-            Предпросмотр
-          </button>
         </Link>
         <Link
+          className="flex-1 sm:flex-none"
           to={
             pageIndex < constructorPages.length - 1
               ? constructorPages[pageIndex + 1].link
@@ -121,16 +103,9 @@ const FormLayout: FC<FormLayoutProps> = ({
                 ),
               )
             }
-            className="hidden h-[35px] w-[176.5px] rounded-[30px] bg-grey-300 font-primary text-400 font-normal text-white sm:block"
+            className="h-[46px] w-full rounded-42 bg-primary font-primary text-300 font-semibold text-white transition-colors duration-200 hover:bg-primary-700 sm:h-[36px] sm:w-[176.5px]"
           >
             Далее
-          </button>
-          <button className="h-[40px] w-[40px] rounded-full bg-grey-50 p-2 sm:hidden">
-            <img
-              src={arrowRight}
-              alt="Next Page"
-              className="h-[24px] w-[24px]"
-            />
           </button>
         </Link>
       </div>

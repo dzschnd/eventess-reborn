@@ -4,7 +4,6 @@ export const getInvitationDetailsQuery = async (invitationId, isPublished, clien
     const invitation = await client.invitation.findFirst({
         where: { id: id, isPublished: isPublished },
         include: {
-            template: true,
             place: true,
             invitationColors: { include: { color: true }, orderBy: { position: "asc" } },
             planItems: { orderBy: { position: "asc" } },
@@ -31,10 +30,9 @@ export const getInvitationDetailsQuery = async (invitationId, isPublished, clien
             partner_2_name: invitation.partner2Name,
             couple_image: invitation.coupleImage,
             author_id: invitation.authorId,
-            template_id: invitation.templateId,
             event_date: invitation.eventDate ? invitation.eventDate.toISOString().split("T")[0] : null,
             is_published: invitation.isPublished,
-            template_name: invitation.template.name,
+            template_name: invitation.templateName,
             place: invitation.place
                 ? {
                     address: invitation.place.address,
@@ -81,12 +79,6 @@ export const getAllInvitationsQuery = async (authorId, isPublished, client = pri
         orderBy: { createdAt: "desc" },
     });
 };
-export const getTemplateIdQuery = async (templateName, client = prisma) => {
-    return client.template.findMany({
-        where: { name: templateName },
-        select: { id: true },
-    });
-};
 export const getInvitationPlaceIdQuery = async (invitationId, client = prisma) => {
     return client.invitation.findMany({
         where: { id: Number(invitationId) },
@@ -120,9 +112,9 @@ export const getAllGuestAnswersQuery = async (authorId, client = prisma) => {
         where: { invitation: { authorId: Number(authorId) } },
     });
 };
-export const createDraftQuery = async (authorId, templateId, client = prisma) => {
+export const createDraftQuery = async (authorId, templateName, client = prisma) => {
     const created = await client.invitation.create({
-        data: { authorId: Number(authorId), templateId: Number(templateId) },
+        data: { authorId: Number(authorId), templateName: templateName },
     });
     return [created];
 };

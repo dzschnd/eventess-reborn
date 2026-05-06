@@ -30,8 +30,8 @@ const FormMenu: FC<FormLayoutProps> = ({ pageIndex, setIsMenuOpen }) => {
   };
 
   return (
-    <div className="relative min-h-full w-full overflow-y-auto overflow-x-hidden sm:w-[423px] sm:min-w-[423px] sm:shadow-form">
-      <div className="absolute inset-0 flex min-h-full w-full justify-center pl-[16px] pr-[16px] pt-[20px] sm:w-[423px] sm:min-w-[423px] sm:pl-[30px] sm:pr-[30px] sm:pt-[40px]">
+    <div className="relative min-h-full w-full overflow-y-auto overflow-x-hidden bg-white sm:w-[423px] sm:min-w-[423px] sm:shadow-form">
+      <div className="absolute inset-0 flex min-h-full w-full justify-center bg-white pl-[16px] pr-[16px] pt-[20px] sm:w-[423px] sm:min-w-[423px] sm:pl-[30px] sm:pr-[30px] sm:pt-[40px]">
         <div className="flex w-[328px] flex-col gap-[30px] sm:w-[363px]">
           <div className="flex justify-end">
             <button onClick={() => setIsMenuOpen(false)}>

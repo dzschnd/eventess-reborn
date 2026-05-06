@@ -1,7 +1,6 @@
 import { useRef } from "react";
 import type { FC } from "react";
 import FormLayout from "../../../layouts/FormLayout";
-import calendarIcon from "../../../../../assetsOld/formIcons/calendar.png";
 import ConstructorDateInput from "../Inputs/ConstructorDateInput";
 import { useAppDispatch, useAppSelector } from "../../../../../api/redux/hooks";
 import { Controller, useForm } from "react-hook-form";
@@ -100,7 +99,6 @@ const DateForm: FC = () => {
           <ConstructorDateInput
             {...field}
             label={"Дата"}
-            icon={calendarIcon}
             onChange={(e) => {
               field.onChange(e);
               handleUpdateLocalDraft();

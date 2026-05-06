@@ -34,7 +34,7 @@ const makeInvitation = (overrides = {}) => ({
     isPublished: true,
     createdAt: new Date(),
     authorId: 1,
-    templateId: 1,
+    templateName: "red_velvet",
     placeId: null,
     ...overrides,
 });

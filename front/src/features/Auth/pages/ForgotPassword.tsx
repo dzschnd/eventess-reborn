@@ -8,7 +8,6 @@ import type { z } from "zod";
 import { requestPasswordReset } from "../../../api/service/UserService";
 import { SERVER_ERROR, USER_NOT_FOUND } from "../../../api/messages";
 import Input from "../../../components/Input";
-import { EmailIcon } from "../../../assets/svg/EmailIcon";
 import SubmitButton from "../components/SubmitButton";
 import LinkToLoginOrRegister from "../components/LinkToLoginOrRegister";
 import { ArrowBack } from "../../../assets/svg/common/ArrowBack";
@@ -98,7 +97,7 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
           восстановления пароля
         </p>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
-          <div className="relative mb-8">
+          <div className="relative mb-14">
             <Input
               id="email"
               name={emailName}
@@ -116,7 +115,6 @@ export const ForgotPassword: FC<ForgotPasswordProps> = ({
               onBlur={emailOnBlur}
               ref={emailRef}
               error={errors?.email?.message || (errorMessage ?? "")}
-              iconElement={<EmailIcon />}
             />
           </div>
           <SubmitButton message={"Получить код"} disabled={loading} />

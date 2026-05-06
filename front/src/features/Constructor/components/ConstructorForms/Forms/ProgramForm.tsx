@@ -1,7 +1,6 @@
 import type { FC } from "react";
 import FormLayout from "../../../layouts/FormLayout";
 import ProgramEventInput from "../Inputs/ProgramEventInput";
-import plusIcon from "../../../../../assetsOld/buttonIcons/plus.png";
 import { useAppDispatch, useAppSelector } from "../../../../../api/redux/hooks";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { updateLocalDraft } from "../../../../../api/redux/slices/draftSlice";
@@ -163,49 +162,45 @@ const ProgramForm: FC = () => {
         "Укажите время и краткое описание каждого момента — от церемонии до финальной вечеринки. Пусть гости знают, чего ждать и когда веселиться!🎉"
       }
     >
-      {fields.map((field, index) => (
-        <Controller
-          key={field.id}
-          control={control}
-          name={`planItems.${index}`}
-          render={({ field }) => (
-            <ProgramEventInput
-              value={{
-                eventTime: field.value.eventTime,
-                description: field.value.description,
-                position: index,
-              }}
-              onChange={(value) => {
-                field.onChange(value);
-                handleUpdateLocalDraft();
-              }}
-              onBlur={handleUpdateDraft}
-              onRemove={() => handleRemovePlanItem(index)}
-              placeholder={"Введите событие"}
-            />
-          )}
-        />
-      ))}
+      <div className="flex flex-col gap-7 pt-2 sm:gap-8">
+        {fields.map((field, index) => (
+          <Controller
+            key={field.id}
+            control={control}
+            name={`planItems.${index}`}
+            render={({ field }) => (
+              <ProgramEventInput
+                value={{
+                  eventTime: field.value.eventTime,
+                  description: field.value.description,
+                  position: index,
+                }}
+                onChange={(value) => {
+                  field.onChange(value);
+                  handleUpdateLocalDraft();
+                }}
+                onBlur={handleUpdateDraft}
+                onRemove={() => handleRemovePlanItem(index)}
+                placeholder={"Введите событие"}
+              />
+            )}
+          />
+        ))}
 
-      <button
-        type="button"
-        className="self-center"
-        onClick={() =>
-          append({
-            eventTime: new Time(),
-            description: "",
-            position: fields.length,
-          })
-        }
-      >
-        <div className="mb-1 flex items-center gap-1">
-          <span className="font-primary text-300 font-normal text-grey-400">
-            Добавить событие
-          </span>
-          <img src={plusIcon} alt="Add" className="h-[15px] w-[15px]" />
-        </div>
-        <div className="h-[1px] w-full bg-grey-400" />
-      </button>
+        <button
+          type="button"
+          className="mt-2 h-[42px] self-center rounded-[42px] border border-primary px-8 font-primary text-[14px] font-semibold leading-[1] text-primary transition-colors duration-200 hover:bg-primary hover:text-white"
+          onClick={() =>
+            append({
+              eventTime: new Time(),
+              description: "",
+              position: fields.length,
+            })
+          }
+        >
+          Добавить событие +
+        </button>
+      </div>
     </FormLayout>
   );
 };
